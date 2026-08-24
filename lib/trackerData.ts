@@ -22,8 +22,9 @@ export const STRIVER_A2Z_PROBLEMS: DSAProblemTask[] = [
     difficulty: 'Medium',
     corePattern: 'Dutch National Flag (3 Pointers)',
     visualizerArchetype: 'Dual Pointer Rail',
-    hasVisualizer: false,
-    status: 'Todo',
+    hasVisualizer: true,
+    visualizerUrl: '/sort-colors',
+    status: 'Completed',
     notes: '3 Pointers (low, mid, high) swapping elements live in 1-pass.'
   },
   {
