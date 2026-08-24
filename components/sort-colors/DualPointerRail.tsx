@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUp, ArrowDown, Sparkles, Layers } from 'lucide-react';
+import { ArrowUp, ArrowDown, Sparkles, Layers, RefreshCw } from 'lucide-react';
 import { SortColorsStep } from '@/lib/sortColorsSimulation';
 
 interface DualPointerRailProps {
@@ -10,25 +10,25 @@ interface DualPointerRailProps {
 }
 
 export function DualPointerRail({ currentStep }: DualPointerRailProps) {
-  const { arraySnapshot, low, mid, high, swappingIndices } = currentStep;
+  const { arraySnapshot, low, mid, high, swappingIndices, actionType } = currentStep;
 
   const getColorConfig = (val: number) => {
     switch (val) {
       case 0:
         return {
-          bg: 'bg-rose-500/20 border-rose-500/50 text-rose-300 shadow-rose-500/10',
+          bg: 'bg-rose-500/25 border-rose-500/70 text-rose-200 shadow-rose-500/20',
           badgeBg: 'bg-rose-500 text-slate-950',
           label: '0 (Red)',
         };
       case 1:
         return {
-          bg: 'bg-slate-200/90 border-white text-slate-950 font-bold shadow-slate-200/20',
+          bg: 'bg-slate-200 border-white text-slate-950 font-extrabold shadow-slate-200/30',
           badgeBg: 'bg-slate-300 text-slate-950',
           label: '1 (White)',
         };
       case 2:
         return {
-          bg: 'bg-sky-500/20 border-sky-500/50 text-sky-300 shadow-sky-500/10',
+          bg: 'bg-sky-500/25 border-sky-500/70 text-sky-200 shadow-sky-500/20',
           badgeBg: 'bg-sky-500 text-slate-950',
           label: '2 (Blue)',
         };
@@ -41,10 +41,12 @@ export function DualPointerRail({ currentStep }: DualPointerRailProps) {
     }
   };
 
+  const isSwapAction = actionType === 'swap_low' || actionType === 'swap_high';
+
   return (
     <div className="w-full h-full bg-[#0d1117] border border-slate-800 rounded-2xl p-4 shadow-2xl backdrop-blur-xl flex flex-col justify-between font-mono text-xs overflow-hidden">
       {/* 1. Component Header */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+      <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-2">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-rose-500 via-amber-500 to-sky-500 flex items-center justify-center shadow-lg">
             <Layers className="w-4 h-4 text-slate-950 font-bold" />
@@ -52,12 +54,13 @@ export function DualPointerRail({ currentStep }: DualPointerRailProps) {
           <div>
             <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wider flex items-center gap-2">
               Dutch National Flag 3-Pointer Rail
-              <span className="text-[9px] px-2 py-0.2 rounded bg-sky-500/20 text-sky-300 border border-sky-500/40 font-mono">
-                Single Pass O(N)
+              <span className="text-[9px] px-2 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono flex items-center gap-1">
+                <RefreshCw className={`w-3 h-3 ${isSwapAction ? 'animate-spin' : ''}`} />
+                Dynamic Physical Arc Swaps
               </span>
             </h3>
             <p className="text-[11px] text-slate-400 font-sans">
-              4 Virtual Partition Boundaries: 0s [0...low-1] • 1s [low...mid-1] • Unknown [mid...high] • 2s [high+1...n-1]
+              4 Virtual Boundaries: 0s [0...low-1] • 1s [low...mid-1] • Unknown [mid...high] • 2s [high+1...n-1]
             </p>
           </div>
         </div>
@@ -76,18 +79,25 @@ export function DualPointerRail({ currentStep }: DualPointerRailProps) {
         </div>
       </div>
 
-      {/* 2. Main 2D Array Rail Canvas with Unified Column Alignment */}
-      <div className="flex-1 flex items-center justify-center gap-2 sm:gap-3 px-2 py-4">
-        {arraySnapshot.map((val, idx) => {
+      {/* 2. Main 2D Array Rail Canvas with Physical Framer Motion Arc Swaps */}
+      <div className="relative flex-1 flex items-center justify-center gap-2 sm:gap-4 px-2 py-6">
+        {arraySnapshot.map((element, idx) => {
+          const val = element.val;
           const config = getColorConfig(val);
           const isSwapping = swappingIndices?.includes(idx);
+          const swapPosIdx = swappingIndices ? swappingIndices.indexOf(idx) : -1;
+          
+          // Arc Y-offset calculation: 1st swapped element arcs UP (-26px), 2nd swapped element arcs DOWN (+26px)
+          const arcYOffset = isSwapping ? (swapPosIdx === 0 ? -26 : 26) : 0;
+          const arcRotate = isSwapping ? (swapPosIdx === 0 ? -6 : 6) : 0;
+
           const isLowHere = idx === low;
           const isMidHere = idx === mid;
           const isHighHere = idx === high;
 
           return (
             <div
-              key={`col-${idx}`}
+              key={`col-slot-${idx}`}
               className="flex-1 max-w-[76px] flex flex-col items-center justify-center gap-2"
             >
               {/* TOP SLOT: High Pointer Badge (Points Down) */}
@@ -106,23 +116,45 @@ export function DualPointerRail({ currentStep }: DualPointerRailProps) {
                 ) : null}
               </div>
 
-              {/* CENTER SLOT: 2D Array Cell */}
+              {/* CENTER SLOT: 2D Array Cell with Persistent Element ID Key for Real Physical Layout Motion */}
               <motion.div
+                key={element.id}
                 layout
-                initial={{ scale: 0.9, opacity: 0 }}
+                initial={{ scale: 0.8, opacity: 0 }}
                 animate={{
-                  scale: isSwapping ? 1.12 : isMidHere ? 1.05 : 1,
+                  y: arcYOffset,
+                  rotate: arcRotate,
+                  scale: isSwapping ? 1.18 : isMidHere ? 1.05 : 1,
                   opacity: 1,
                 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-                className={`relative w-full h-20 rounded-2xl border-2 flex flex-col items-center justify-center shadow-xl backdrop-blur-md transition-colors ${
+                transition={{
+                  layout: { type: 'spring', stiffness: 220, damping: 22 },
+                  y: { type: 'spring', stiffness: 300, damping: 20 },
+                  scale: { duration: 0.2 },
+                }}
+                className={`relative w-full h-20 rounded-2xl border-2 flex flex-col items-center justify-center shadow-2xl backdrop-blur-md transition-colors ${
                   config.bg
-                } ${isSwapping ? 'ring-4 ring-amber-400 shadow-amber-500/40 z-20' : ''}`}
+                } ${
+                  isSwapping
+                    ? 'ring-4 ring-amber-400 shadow-2xl shadow-amber-500/50 z-30 border-amber-300'
+                    : ''
+                }`}
               >
                 {/* Cell Index Badge */}
                 <span className="absolute top-1.5 left-2 text-[9px] font-mono text-slate-400 font-semibold">
                   [{idx}]
                 </span>
+
+                {/* Swap Indicator Laser Effect */}
+                {isSwapping && (
+                  <motion.span
+                    initial={{ scale: 0.4, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="absolute -top-2 right-1 text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-400 text-slate-950 shadow-lg"
+                  >
+                    SWAP ↔
+                  </motion.span>
+                )}
 
                 {/* Value Display */}
                 <span className="text-xl font-extrabold font-mono tracking-wider">

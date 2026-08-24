@@ -1,7 +1,12 @@
+export interface ArrayElement {
+  id: string; // Unique persistent ID (e.g. 'el-0', 'el-1') for Framer Motion physical layout animation
+  val: number; // 0, 1, or 2
+}
+
 export interface SortColorsStep {
   stepNumber: number;
   activeLine: number;
-  arraySnapshot: number[];
+  arraySnapshot: ArrayElement[];
   low: number;
   mid: number;
   high: number;
@@ -38,33 +43,39 @@ export const SORT_COLORS_PRESETS: SortColorsPreset[] = [
 
 export function generateSortColorsSteps(initialArray: number[]): SortColorsStep[] {
   const steps: SortColorsStep[] = [];
-  const nums = [...initialArray];
+  
+  // Assign unique persistent IDs to each initial element
+  const elements: ArrayElement[] = initialArray.map((val, idx) => ({
+    id: `el-${idx}-${val}`,
+    val,
+  }));
+
   let low = 0;
   let mid = 0;
-  let high = nums.length - 1;
+  let high = elements.length - 1;
 
   // Step 1: Initialization
   steps.push({
     stepNumber: 1,
     activeLine: 4,
-    arraySnapshot: [...nums],
+    arraySnapshot: elements.map((e) => ({ ...e })),
     low,
     mid,
     high,
     actionType: 'init',
-    actionTitle: 'Initialize Pointers: low=0, mid=0, high=' + high,
+    actionTitle: `Initialize Pointers: low=0, mid=0, high=${high}`,
     hinglishNarration: `Dutch National Flag algorithm initialize ho gaya hai. low=0, mid=0, high=${high}.`,
     whyRule: 'low 0s region ki boundary ko track karta hai, mid current element scan karta hai, aur high 2s region ki left boundary hai.',
   });
 
   while (mid <= high) {
-    const val = nums[mid];
+    const val = elements[mid].val;
 
     // Check step
     steps.push({
       stepNumber: steps.length + 1,
       activeLine: 7,
-      arraySnapshot: [...nums],
+      arraySnapshot: elements.map((e) => ({ ...e })),
       low,
       mid,
       high,
@@ -75,35 +86,36 @@ export function generateSortColorsSteps(initialArray: number[]): SortColorsStep[
     });
 
     if (val === 0) {
-      // Swap nums[low] and nums[mid]
+      // Swap elements[low] and elements[mid]
       steps.push({
         stepNumber: steps.length + 1,
         activeLine: 10,
-        arraySnapshot: [...nums],
+        arraySnapshot: elements.map((e) => ({ ...e })),
         low,
         mid,
         high,
         swappingIndices: [low, mid],
         actionType: 'swap_low',
-        actionTitle: `Swap nums[low=${low}] (${nums[low]}) & nums[mid=${mid}] (${val}) -> low++, mid++`,
-        hinglishNarration: `Value 0 mil gayi! Swap(nums[${low}], nums[${mid}]). low aur mid dono 1 step aage badhein.`,
+        actionTitle: `Physical Arc Swap: nums[low=${low}] (${elements[low].val}) ↔ nums[mid=${mid}] (${val})`,
+        hinglishNarration: `Value 0 mil gayi! Elements physically swap ho rahe hain [low=${low}] ↔ [mid=${mid}]. low aur mid 1 step aage badhein.`,
         whyRule: '0 ko Red 0s section [0 ... low-1] mein jaana hai.',
       });
 
-      [nums[low], nums[mid]] = [nums[mid], nums[low]];
+      // Perform swap in persistent element array
+      [elements[low], elements[mid]] = [elements[mid], elements[low]];
       low++;
       mid++;
     } else if (val === 1) {
       steps.push({
         stepNumber: steps.length + 1,
         activeLine: 14,
-        arraySnapshot: [...nums],
+        arraySnapshot: elements.map((e) => ({ ...e })),
         low,
         mid,
         high,
         actionType: 'advance_mid',
         actionTitle: `nums[mid=${mid}] == 1 -> Just mid++`,
-        hinglishNarration: `Value 1 mil gayi! Yeh White 1s region [low ... mid-1] mein already sahi jagah hai. Simply mid++ karte hain.`,
+        hinglishNarration: `Value 1 mil gayi! White 1s region mein already correct hai. Simply mid++ karte hain.`,
         whyRule: '1s ko beech ke section mein rehna hai, isliye koi swap zaruri nahi hai.',
       });
 
@@ -113,18 +125,19 @@ export function generateSortColorsSteps(initialArray: number[]): SortColorsStep[
       steps.push({
         stepNumber: steps.length + 1,
         activeLine: 18,
-        arraySnapshot: [...nums],
+        arraySnapshot: elements.map((e) => ({ ...e })),
         low,
         mid,
         high,
         swappingIndices: [mid, high],
         actionType: 'swap_high',
-        actionTitle: `Swap nums[mid=${mid}] (${val}) & nums[high=${high}] (${nums[high]}) -> high--`,
-        hinglishNarration: `Value 2 mil gayi! Swap(nums[${mid}], nums[${high}]). high pointer 1 step peeche aaya. Note: mid increment nahi hoga kyunki swapped element abhi inspect hona baki hai!`,
+        actionTitle: `Physical Arc Swap: nums[mid=${mid}] (${val}) ↔ nums[high=${high}] (${elements[high].val})`,
+        hinglishNarration: `Value 2 mil gayi! Elements physically swap ho rahe hain [mid=${mid}] ↔ [high=${high}]. high 1 step peeche aaya.`,
         whyRule: '2 ko Blue 2s section [high+1 ... n-1] mein bhejna hai.',
       });
 
-      [nums[mid], nums[high]] = [nums[high], nums[mid]];
+      // Perform swap in persistent element array
+      [elements[mid], elements[high]] = [elements[high], elements[mid]];
       high--;
     }
   }
@@ -133,13 +146,13 @@ export function generateSortColorsSteps(initialArray: number[]): SortColorsStep[
   steps.push({
     stepNumber: steps.length + 1,
     activeLine: 24,
-    arraySnapshot: [...nums],
+    arraySnapshot: elements.map((e) => ({ ...e })),
     low,
     mid,
     high,
     actionType: 'complete',
     actionTitle: '🎉 Sorting Complete: Array Fully Partitioned!',
-    hinglishNarration: `Dutch National Flag algorithm complete! All 0s, 1s, and 2s are in-place sorted: [${nums.join(', ')}].`,
+    hinglishNarration: `Dutch National Flag algorithm complete! All elements in-place sorted: [${elements.map((e) => e.val).join(', ')}].`,
     whyRule: 'mid > high condition satisfy ho gayi, iska matlab saare elements correct regions mein divide ho chuke hain.',
   });
 
