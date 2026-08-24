@@ -70,7 +70,7 @@ export function ReorderableArrayRail({
   const getColors = getColorConfig || defaultGetColorConfig;
 
   return (
-    <div className="w-full flex flex-col items-center justify-center min-h-[220px] py-6 px-4 select-none">
+    <div className="w-full flex flex-col items-center justify-center min-h-[240px] py-4 px-4 select-none">
       {/* Shared Flex Container — Direct Siblings enable Framer Motion FLIP Physical Sliding */}
       <div className="relative flex items-center justify-center gap-3 sm:gap-4 md:gap-5 w-full max-w-4xl">
         {elements.map((element, idx) => {
@@ -98,26 +98,26 @@ export function ReorderableArrayRail({
               }}
               className="relative flex flex-col items-center flex-1 max-w-[80px] min-w-[56px]"
             >
-              {/* TOP POINTER TRACK (100% Stable & Upright) */}
-              <div className="h-10 flex items-end justify-center w-full mb-1">
+              {/* TOP POINTER TRACK (Slightly Larger Upright Text & Icon) */}
+              <div className="h-14 flex items-end justify-center w-full mb-1">
                 {topPointers.map((p) => (
                   <motion.div
                     key={`top-ptr-${p.label}`}
                     layoutId={`ptr-top-${p.label}`}
-                    className="flex flex-col items-center"
+                    className="flex flex-col items-center gap-0.5"
                     transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                   >
                     <span
-                      className={`px-2 py-0.5 rounded text-[9px] font-mono font-bold shadow-lg whitespace-nowrap ${p.color}`}
+                      className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-extrabold shadow-lg whitespace-nowrap tracking-wide ${p.color}`}
                     >
                       {p.label}={p.index}
                     </span>
-                    <ArrowDown className="w-4 h-4 text-purple-400 animate-bounce" />
+                    <ArrowDown className="w-5 h-5 text-purple-400 animate-bounce" />
                   </motion.div>
                 ))}
               </div>
 
-              {/* PHYSICAL ARRAY CELL BLOCK (Arcs & Tilts cleanly without affecting pointers) */}
+              {/* PHYSICAL ARRAY CELL BLOCK */}
               <motion.div
                 animate={{
                   y: arcY,
@@ -162,18 +162,18 @@ export function ReorderableArrayRail({
                 </span>
               </motion.div>
 
-              {/* BOTTOM POINTER TRACK (100% Stable & Upright) */}
-              <div className="h-12 flex flex-col items-center justify-start gap-1 w-full mt-1">
+              {/* BOTTOM POINTER TRACK (Slightly Larger Upright Text & Icon) */}
+              <div className="h-16 flex flex-col items-center justify-start gap-1 w-full mt-1">
                 {bottomPointers.map((p) => (
                   <motion.div
                     key={`bot-ptr-${p.label}`}
                     layoutId={`ptr-bot-${p.label}`}
-                    className="flex flex-col items-center"
+                    className="flex flex-col items-center gap-0.5"
                     transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                   >
-                    <ArrowUp className={`w-3.5 h-3.5 ${p.label === 'low' ? 'text-emerald-400' : 'text-amber-400'}`} />
+                    <ArrowUp className={`w-5 h-5 ${p.label === 'low' ? 'text-emerald-400' : 'text-amber-400'}`} />
                     <span
-                      className={`px-2 py-0.5 rounded text-[9px] font-mono font-bold shadow-lg whitespace-nowrap ${p.color}`}
+                      className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-extrabold shadow-lg whitespace-nowrap tracking-wide ${p.color}`}
                     >
                       {p.label}={p.index}
                     </span>
