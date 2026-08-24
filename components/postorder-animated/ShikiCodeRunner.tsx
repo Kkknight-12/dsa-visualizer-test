@@ -97,7 +97,7 @@ export function ShikiCodeRunner({ currentStep, totalSteps }: ShikiCodeRunnerProp
   const activeLine = getActiveLineNumber();
   const f = currentStep.poppedFrame;
 
-  // Auto-scroll to center active executing line directly in the exact middle of code container
+  // Auto-scroll active executing line smoothly toward center of viewport without artificial gaps
   useEffect(() => {
     const scrollToActive = () => {
       if (activeLineRef.current && codeContainerRef.current) {
@@ -114,7 +114,6 @@ export function ShikiCodeRunner({ currentStep, totalSteps }: ShikiCodeRunnerProp
       }
     };
 
-    // Trigger on requestAnimationFrame to ensure accurate paint offset
     const frameId = requestAnimationFrame(scrollToActive);
     return () => cancelAnimationFrame(frameId);
   }, [activeLine, currentStep.stepNumber, tokenizedLines]);
@@ -160,7 +159,7 @@ export function ShikiCodeRunner({ currentStep, totalSteps }: ShikiCodeRunnerProp
             </h3>
             <p className="text-[11px] text-slate-400 font-sans flex items-center gap-1.5">
               <Target className="w-3 h-3 text-sky-400" />
-              <span>Active execution line is locked to the <strong>vertical center</strong></span>
+              <span>Clean IDE view with smooth active line auto-focus</span>
             </p>
           </div>
         </div>
@@ -174,14 +173,11 @@ export function ShikiCodeRunner({ currentStep, totalSteps }: ShikiCodeRunnerProp
         </button>
       </div>
 
-      {/* 2. Code Body with Shiki Tokens & Pixel-Perfect Center Auto-Scroll */}
+      {/* 2. Code Body with Shiki Tokens & Clean Natural Padding (No Empty Gaps) */}
       <div
         ref={codeContainerRef}
-        className="relative flex-1 overflow-x-auto overflow-y-auto max-h-[360px] min-h-[300px] bg-[#16161e] px-3 rounded-xl border border-slate-800/90 space-y-0.5 select-text"
+        className="relative flex-1 overflow-x-auto overflow-y-auto max-h-[360px] min-h-[300px] bg-[#16161e] p-3 rounded-xl border border-slate-800/90 space-y-0.5 select-text"
       >
-        {/* Top Spacer to allow initial lines to center in view */}
-        <div className="h-[200px] shrink-0 select-none pointer-events-none" aria-hidden="true" />
-
         {rawLines.map((rawText, idx) => {
           const lineNum = idx + 1;
           const isHighlighted = lineNum === activeLine;
@@ -192,7 +188,7 @@ export function ShikiCodeRunner({ currentStep, totalSteps }: ShikiCodeRunnerProp
             <div
               key={lineNum}
               ref={isHighlighted ? activeLineRef : null}
-              className={`relative flex items-center justify-between min-w-max px-2 py-[3px] rounded transition-all duration-200 ${
+              className={`relative flex items-center justify-between min-w-max px-2 py-[2.5px] rounded transition-all duration-200 ${
                 isHighlighted
                   ? 'bg-sky-500/25 border-l-4 border-sky-400 shadow-xl shadow-sky-500/20 ring-1 ring-sky-500/40'
                   : 'hover:bg-slate-900/40 border-l-4 border-transparent'
@@ -246,9 +242,6 @@ export function ShikiCodeRunner({ currentStep, totalSteps }: ShikiCodeRunnerProp
             </div>
           );
         })}
-
-        {/* Bottom Spacer to allow terminal return lines to center in view */}
-        <div className="h-[200px] shrink-0 select-none pointer-events-none" aria-hidden="true" />
       </div>
 
       {/* 3. Action Narration Footer */}
