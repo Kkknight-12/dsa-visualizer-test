@@ -43,15 +43,23 @@ export function HeaderNav() {
       {/* Right Action Navigation Links */}
       <div className="flex items-center gap-2 pointer-events-auto">
         <Link
+          href="/tracker"
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 border border-sky-400 text-xs font-mono font-bold text-slate-950 hover:scale-105 backdrop-blur-xl transition-all shadow-lg shadow-sky-500/20"
+        >
+          <Layers className="w-3.5 h-3.5 text-slate-950" />
+          <span>Task Tracker 📋</span>
+        </Link>
+
+        <Link
           href="/consistent-hashing"
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-500/20 border border-sky-500/40 text-xs font-mono text-sky-300 hover:bg-sky-500/30 backdrop-blur-xl transition-all shadow-lg shadow-sky-500/10"
         >
           <Globe2 className="w-3.5 h-3.5 text-sky-400" />
-          <span>Consistent Hashing 3D 🌐</span>
+          <span>Consistent Hashing 🌐</span>
         </Link>
 
         <Link
-          href="/postorder"
+          href="/postorder-3d"
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-500/20 border border-purple-500/40 text-xs font-mono text-purple-300 hover:bg-purple-500/30 backdrop-blur-xl transition-all shadow-lg shadow-purple-500/10"
         >
           <Binary className="w-3.5 h-3.5 text-purple-400" />
