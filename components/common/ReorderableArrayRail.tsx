@@ -12,7 +12,7 @@ export interface ArrayBlockElement {
 export interface PointerInfo {
   label: string;
   index: number;
-  color: string; // Tailwind color class or hex
+  color: string; // Tailwind color class
   direction: 'up' | 'down';
 }
 
@@ -83,29 +83,22 @@ export function ReorderableArrayRail({
           const topPointers = pointers.filter((p) => p.index === idx && p.direction === 'down');
           const bottomPointers = pointers.filter((p) => p.index === idx && p.direction === 'up');
 
-          // Arc Y-offset calculation for physical 2D collision avoidance during swap
-          const arcY = isSwapping ? (swapPosIdx === 0 ? -32 : 32) : 0;
-          const arcRotate = isSwapping ? (swapPosIdx === 0 ? -8 : 8) : 0;
+          // Arc Y-offset & Tilt applied strictly to the Array Cell Block (leaving Pointers 100% Stable)
+          const arcY = isSwapping ? (swapPosIdx === 0 ? -28 : 28) : 0;
+          const arcRotate = isSwapping ? (swapPosIdx === 0 ? -6 : 6) : 0;
 
           return (
             <motion.div
               key={element.id}
               layout
               initial={{ scale: 0.8, opacity: 0 }}
-              animate={{
-                y: arcY,
-                rotate: arcRotate,
-                scale: isSwapping ? 1.15 : 1,
-                opacity: 1,
-              }}
+              animate={{ opacity: 1 }}
               transition={{
                 layout: { type: 'spring', stiffness: 180, damping: 19 },
-                y: { type: 'spring', stiffness: 250, damping: 18 },
-                scale: { duration: 0.25 },
               }}
               className="relative flex flex-col items-center flex-1 max-w-[80px] min-w-[56px]"
             >
-              {/* TOP POINTER TRACK (Directly attached to block header) */}
+              {/* TOP POINTER TRACK (100% Stable & Upright) */}
               <div className="h-10 flex items-end justify-center w-full mb-1">
                 {topPointers.map((p) => (
                   <motion.div
@@ -124,9 +117,19 @@ export function ReorderableArrayRail({
                 ))}
               </div>
 
-              {/* PHYSICAL ARRAY BLOCK */}
-              <div
-                className={`relative w-full h-20 rounded-2xl border-2 flex flex-col items-center justify-center shadow-2xl backdrop-blur-xl transition-all ${
+              {/* PHYSICAL ARRAY CELL BLOCK (Arcs & Tilts cleanly without affecting pointers) */}
+              <motion.div
+                animate={{
+                  y: arcY,
+                  rotate: arcRotate,
+                  scale: isSwapping ? 1.15 : 1,
+                }}
+                transition={{
+                  y: { type: 'spring', stiffness: 260, damping: 20 },
+                  rotate: { type: 'spring', stiffness: 260, damping: 20 },
+                  scale: { duration: 0.2 },
+                }}
+                className={`relative w-full h-20 rounded-2xl border-2 flex flex-col items-center justify-center shadow-2xl backdrop-blur-xl transition-colors ${
                   colors.bg
                 } ${colors.border} ${colors.text} ${
                   isSwapping ? 'ring-4 ring-amber-400 shadow-2xl shadow-amber-500/50 z-30' : ''
@@ -157,9 +160,9 @@ export function ReorderableArrayRail({
                 <span className="text-[9px] font-mono opacity-80 mt-0.5">
                   {colors.label}
                 </span>
-              </div>
+              </motion.div>
 
-              {/* BOTTOM POINTER TRACK (Directly attached to block footer) */}
+              {/* BOTTOM POINTER TRACK (100% Stable & Upright) */}
               <div className="h-12 flex flex-col items-center justify-start gap-1 w-full mt-1">
                 {bottomPointers.map((p) => (
                   <motion.div
