@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUp, ArrowDown, Sparkles, Layers, Shield } from 'lucide-react';
+import { ArrowUp, ArrowDown, Sparkles, Layers } from 'lucide-react';
 import { SortColorsStep } from '@/lib/sortColorsSimulation';
 
 interface DualPointerRailProps {
@@ -10,7 +10,7 @@ interface DualPointerRailProps {
 }
 
 export function DualPointerRail({ currentStep }: DualPointerRailProps) {
-  const { arraySnapshot, low, mid, high, swappingIndices, actionType } = currentStep;
+  const { arraySnapshot, low, mid, high, swappingIndices } = currentStep;
 
   const getColorConfig = (val: number) => {
     switch (val) {
@@ -76,48 +76,46 @@ export function DualPointerRail({ currentStep }: DualPointerRailProps) {
         </div>
       </div>
 
-      {/* 2. Main 2D Array Rail Canvas */}
-      <div className="flex-1 flex flex-col justify-center gap-6 my-4 px-2">
-        {/* Top High Pointer Track */}
-        <div className="relative h-8 flex items-center">
-          {arraySnapshot.map((_, idx) => (
-            <div key={`high-track-${idx}`} className="flex-1 flex justify-center">
-              {idx === high ? (
-                <motion.div
-                  layoutId="high-pointer"
-                  className="flex flex-col items-center gap-0.5"
-                  transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                >
-                  <span className="px-2 py-0.5 rounded-md bg-purple-500 text-white text-[10px] font-bold shadow-lg shadow-purple-500/30 flex items-center gap-1">
-                    high = {high}
-                  </span>
-                  <ArrowDown className="w-4 h-4 text-purple-400 animate-bounce" />
-                </motion.div>
-              ) : null}
-            </div>
-          ))}
-        </div>
+      {/* 2. Main 2D Array Rail Canvas with Unified Column Alignment */}
+      <div className="flex-1 flex items-center justify-center gap-2 sm:gap-3 px-2 py-4">
+        {arraySnapshot.map((val, idx) => {
+          const config = getColorConfig(val);
+          const isSwapping = swappingIndices?.includes(idx);
+          const isLowHere = idx === low;
+          const isMidHere = idx === mid;
+          const isHighHere = idx === high;
 
-        {/* 2D Array Cells */}
-        <div className="flex items-center gap-3 justify-center">
-          {arraySnapshot.map((val, idx) => {
-            const config = getColorConfig(val);
-            const isSwapping = swappingIndices?.includes(idx);
-            const isMid = idx === mid;
-            const isLow = idx === low;
-            const isHigh = idx === high;
+          return (
+            <div
+              key={`col-${idx}`}
+              className="flex-1 max-w-[76px] flex flex-col items-center justify-center gap-2"
+            >
+              {/* TOP SLOT: High Pointer Badge (Points Down) */}
+              <div className="h-10 flex items-end justify-center w-full">
+                {isHighHere ? (
+                  <motion.div
+                    layoutId="high-pointer-badge"
+                    className="flex flex-col items-center"
+                    transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+                  >
+                    <span className="px-2 py-0.5 rounded bg-purple-500 text-white text-[9px] font-bold shadow-md shadow-purple-500/30 whitespace-nowrap">
+                      high={high}
+                    </span>
+                    <ArrowDown className="w-4 h-4 text-purple-400 animate-bounce" />
+                  </motion.div>
+                ) : null}
+              </div>
 
-            return (
+              {/* CENTER SLOT: 2D Array Cell */}
               <motion.div
-                key={`cell-${idx}`}
                 layout
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{
-                  scale: isSwapping ? 1.15 : isMid ? 1.05 : 1,
+                  scale: isSwapping ? 1.12 : isMidHere ? 1.05 : 1,
                   opacity: 1,
                 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-                className={`relative flex-1 max-w-[80px] h-20 rounded-2xl border-2 flex flex-col items-center justify-center shadow-xl backdrop-blur-md transition-colors ${
+                className={`relative w-full h-20 rounded-2xl border-2 flex flex-col items-center justify-center shadow-xl backdrop-blur-md transition-colors ${
                   config.bg
                 } ${isSwapping ? 'ring-4 ring-amber-400 shadow-amber-500/40 z-20' : ''}`}
               >
@@ -131,54 +129,43 @@ export function DualPointerRail({ currentStep }: DualPointerRailProps) {
                   {val}
                 </span>
 
-                {/* Region Tag */}
+                {/* Region Label */}
                 <span className="text-[9px] font-mono opacity-80 mt-0.5">
                   {config.label.split(' ')[1]}
                 </span>
               </motion.div>
-            );
-          })}
-        </div>
 
-        {/* Bottom Low & Mid Pointer Track */}
-        <div className="relative h-12 flex items-center">
-          {arraySnapshot.map((_, idx) => {
-            const isLowHere = idx === low;
-            const isMidHere = idx === mid;
+              {/* BOTTOM SLOT: Low & Mid Pointer Badges (Points Up) */}
+              <div className="h-14 flex flex-col items-center justify-start gap-1 w-full pt-1">
+                {isLowHere && (
+                  <motion.div
+                    layoutId="low-pointer-badge"
+                    className="flex flex-col items-center"
+                    transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+                  >
+                    <ArrowUp className="w-3.5 h-3.5 text-emerald-400" />
+                    <span className="px-2 py-0.5 rounded bg-emerald-500 text-slate-950 text-[9px] font-bold shadow-md shadow-emerald-500/30 whitespace-nowrap">
+                      low={low}
+                    </span>
+                  </motion.div>
+                )}
 
-            return (
-              <div key={`low-mid-track-${idx}`} className="flex-1 flex flex-col items-center justify-start gap-1">
-                <div className="flex items-center gap-1">
-                  {isLowHere && (
-                    <motion.div
-                      layoutId="low-pointer"
-                      className="flex flex-col items-center"
-                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                    >
-                      <ArrowUp className="w-4 h-4 text-emerald-400" />
-                      <span className="px-2 py-0.5 rounded-md bg-emerald-500 text-slate-950 text-[10px] font-bold shadow-lg shadow-emerald-500/30">
-                        low = {low}
-                      </span>
-                    </motion.div>
-                  )}
-
-                  {isMidHere && (
-                    <motion.div
-                      layoutId="mid-pointer"
-                      className="flex flex-col items-center"
-                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                    >
-                      <ArrowUp className="w-4 h-4 text-amber-400 animate-pulse" />
-                      <span className="px-2 py-0.5 rounded-md bg-amber-400 text-slate-950 text-[10px] font-bold shadow-lg shadow-amber-500/30">
-                        mid = {mid}
-                      </span>
-                    </motion.div>
-                  )}
-                </div>
+                {isMidHere && (
+                  <motion.div
+                    layoutId="mid-pointer-badge"
+                    className="flex flex-col items-center"
+                    transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+                  >
+                    <ArrowUp className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                    <span className="px-2 py-0.5 rounded bg-amber-400 text-slate-950 text-[9px] font-bold shadow-md shadow-amber-500/30 whitespace-nowrap">
+                      mid={mid}
+                    </span>
+                  </motion.div>
+                )}
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* 3. Action Step Banner & Hinglish Rule Footer */}
