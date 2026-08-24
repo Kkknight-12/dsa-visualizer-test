@@ -1,5 +1,5 @@
 export interface ArrayElement {
-  id: string; // Unique persistent ID (e.g. 'el-0', 'el-1') for Framer Motion physical layout animation
+  id: string; // Unique persistent ID for Framer Motion physical layout animation
   val: number; // 0, 1, or 2
 }
 
@@ -11,7 +11,7 @@ export interface SortColorsStep {
   mid: number;
   high: number;
   swappingIndices?: [number, number];
-  actionType: 'init' | 'check' | 'swap_low' | 'advance_mid' | 'swap_high' | 'complete';
+  actionType: 'init' | 'check' | 'swap_low' | 'advance_low_mid' | 'advance_mid' | 'swap_high' | 'shrink_high' | 'complete';
   actionTitle: string;
   hinglishNarration: string;
   whyRule: string;
@@ -86,7 +86,29 @@ export function generateSortColorsSteps(initialArray: number[]): SortColorsStep[
     });
 
     if (val === 0) {
-      // Swap elements[low] and elements[mid]
+      // Perform physical swap in elements array first
+      [elements[low], elements[mid]] = [elements[mid], elements[low]];
+
+      // PHASE 1: Physical Block Swap (Pointers LOW and MID stay 100% frozen/stable!)
+      steps.push({
+        stepNumber: steps.length + 1,
+        activeLine: 9,
+        arraySnapshot: elements.map((e) => ({ ...e })),
+        low,
+        mid,
+        high,
+        swappingIndices: [low, mid],
+        actionType: 'swap_low',
+        actionTitle: `Phase 1: Physical Block Swap nums[low=${low}] ↔ nums[mid=${mid}]`,
+        hinglishNarration: `Blocks physically swap ho rahe hain. Pointers low=${low} aur mid=${mid} stationary/stable hain.`,
+        whyRule: '0 ko Red 0s section [0 ... low-1] mein jaana hai.',
+      });
+
+      // Increment pointers for Phase 2
+      low++;
+      mid++;
+
+      // PHASE 2: Pointer Advance (Blocks are settled, pointers move now!)
       steps.push({
         stepNumber: steps.length + 1,
         activeLine: 10,
@@ -94,18 +116,15 @@ export function generateSortColorsSteps(initialArray: number[]): SortColorsStep[
         low,
         mid,
         high,
-        swappingIndices: [low, mid],
-        actionType: 'swap_low',
-        actionTitle: `Physical Arc Swap: nums[low=${low}] (${elements[low].val}) ↔ nums[mid=${mid}] (${val})`,
-        hinglishNarration: `Value 0 mil gayi! Elements physically swap ho rahe hain [low=${low}] ↔ [mid=${mid}]. low aur mid 1 step aage badhein.`,
-        whyRule: '0 ko Red 0s section [0 ... low-1] mein jaana hai.',
+        actionType: 'advance_low_mid',
+        actionTitle: `Phase 2: Advance Pointers -> low++ (${low - 1} → ${low}), mid++ (${mid - 1} → ${mid})`,
+        hinglishNarration: `Block swap complete hone ke baad ab low aur mid pointers 1 step aage badhein.`,
+        whyRule: 'Red 0s section boundary expand ho gayi.',
       });
 
-      // Perform swap in persistent element array
-      [elements[low], elements[mid]] = [elements[mid], elements[low]];
-      low++;
-      mid++;
     } else if (val === 1) {
+      mid++;
+
       steps.push({
         stepNumber: steps.length + 1,
         activeLine: 14,
@@ -114,14 +133,35 @@ export function generateSortColorsSteps(initialArray: number[]): SortColorsStep[
         mid,
         high,
         actionType: 'advance_mid',
-        actionTitle: `nums[mid=${mid}] == 1 -> Just mid++`,
+        actionTitle: `nums[mid] == 1 -> Advance mid++ (${mid - 1} → ${mid})`,
         hinglishNarration: `Value 1 mil gayi! White 1s region mein already correct hai. Simply mid++ karte hain.`,
         whyRule: '1s ko beech ke section mein rehna hai, isliye koi swap zaruri nahi hai.',
       });
 
-      mid++;
     } else {
       // val === 2
+      // Perform physical swap in elements array first
+      [elements[mid], elements[high]] = [elements[high], elements[mid]];
+
+      // PHASE 1: Physical Block Swap (Pointers HIGH and MID stay 100% frozen/stable!)
+      steps.push({
+        stepNumber: steps.length + 1,
+        activeLine: 17,
+        arraySnapshot: elements.map((e) => ({ ...e })),
+        low,
+        mid,
+        high,
+        swappingIndices: [mid, high],
+        actionType: 'swap_high',
+        actionTitle: `Phase 1: Physical Block Swap nums[mid=${mid}] ↔ nums[high=${high}]`,
+        hinglishNarration: `Blocks physically swap ho rahe hain. Pointer high=${high} stationary/stable hai.`,
+        whyRule: '2 ko Blue 2s section [high+1 ... n-1] mein bhejna hai.',
+      });
+
+      // Shrink high pointer for Phase 2
+      high--;
+
+      // PHASE 2: Pointer Shrink (Blocks are settled, high pointer shrinks now!)
       steps.push({
         stepNumber: steps.length + 1,
         activeLine: 18,
@@ -129,16 +169,11 @@ export function generateSortColorsSteps(initialArray: number[]): SortColorsStep[
         low,
         mid,
         high,
-        swappingIndices: [mid, high],
-        actionType: 'swap_high',
-        actionTitle: `Physical Arc Swap: nums[mid=${mid}] (${val}) ↔ nums[high=${high}] (${elements[high].val})`,
-        hinglishNarration: `Value 2 mil gayi! Elements physically swap ho rahe hain [mid=${mid}] ↔ [high=${high}]. high 1 step peeche aaya.`,
-        whyRule: '2 ko Blue 2s section [high+1 ... n-1] mein bhejna hai.',
+        actionType: 'shrink_high',
+        actionTitle: `Phase 2: Shrink Pointer -> high-- (${high + 1} → ${high})`,
+        hinglishNarration: `Block swap complete hone ke baad high pointer 1 step left aaya.`,
+        whyRule: 'Blue 2s section boundary left mein shift ho gayi.',
       });
-
-      // Perform swap in persistent element array
-      [elements[mid], elements[high]] = [elements[high], elements[mid]];
-      high--;
     }
   }
 
