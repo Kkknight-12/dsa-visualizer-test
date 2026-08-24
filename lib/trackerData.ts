@@ -35,9 +35,10 @@ export const STRIVER_A2Z_PROBLEMS: DSAProblemTask[] = [
     difficulty: 'Medium',
     corePattern: "Kadane's Algorithm",
     visualizerArchetype: 'Dual Pointer Rail',
-    hasVisualizer: false,
-    status: 'Todo',
-    notes: 'Running sum accumulator vs Max sum reset bar.'
+    hasVisualizer: true,
+    status: 'Completed',
+    visualizerUrl: '/kadanes',
+    notes: 'Running sum accumulator vs Max sum reset bar reusing ReorderableArrayRail.'
   },
   {
     id: 'lc-31',

@@ -11,7 +11,7 @@ This file tracks the step-by-step implementation of all Striver A2Z Sheet proble
 | 1 | LC 145 | Binary Tree Postorder Traversal | Trees | ✅ Done | Optimal (Iterative 2-Phase Stack) | `PostorderTraversal.ts` | ✅ Done (`/postorder-3d`) | ⭐ Approved (Shiki Line Auto-Centering + Multi-Layout Studio) |
 | 2 | SYS-CH | Consistent Hashing | System Design | ✅ Done | Hash Ring & Virtual Nodes | `ConsistentHashing.ts` | ✅ Done (`/consistent-hashing`) | ⭐ Approved |
 | 3 | **LC 75** | **Sort Colors (0s, 1s, 2s)** | **Arrays** | ✅ `problem-sort-colors.md` | Pending User Choice | Pending | In Queue | **Awaiting User Choice** |
-| 4 | LC 53 | Maximum Subarray (Kadane's) | Arrays | ⏳ Queued | - | - | In Queue | Next |
+| 4 | **LC 53** | **Maximum Subarray (Kadane's)** | **Arrays** | ✅ `problem-kadanes.md` | Optimal (Kadane's Single Pass O(N)) | `KadanesAlgorithm.ts` | ✅ Done (`/kadanes`) | ⭐ Approved (Reused ReorderableArrayRail + Scoreboard) |
 | 5 | LC 42 | Trapping Rain Water | Arrays | ⏳ Queued | - | - | In Queue | Next |
 | 6 | LC 33 | Search in Rotated Sorted Array | Binary Search | ⏳ Queued | - | - | In Queue | Next |
 | 7 | LC 206 | Reverse Linked List | Linked List | ⏳ Queued | - | - | In Queue | Next |
