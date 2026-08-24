@@ -2,8 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import { ArrowLeft, Box, CheckCircle2, GitBranch, Layers } from 'lucide-react';
+import {
+  ArrowLeft,
+  GitBranch,
+  Layers,
+  LayoutGrid,
+  Columns2,
+  Sparkles,
+  Zap,
+  Code2,
+  ListOrdered
+} from 'lucide-react';
 import { TREE_PRESETS, generatePostorderSteps } from '@/lib/treeSimulation';
 import { AnimatedTreeMotion } from '@/components/postorder-animated/AnimatedTreeMotion';
 import { AnimatedStackMotion } from '@/components/postorder-animated/AnimatedStackMotion';
@@ -13,12 +22,15 @@ import { ShikiCodeRunner } from '@/components/postorder-animated/ShikiCodeRunner
 import { AnimatedResultMotion } from '@/components/postorder-animated/AnimatedResultMotion';
 import { TreeControls } from '@/components/tree-traversal/TreeControls';
 
+type LayoutMode = 'dual-pane' | 'smart-dock' | 'classic';
+
 export default function Postorder3DPage() {
   const [selectedPreset, setSelectedPreset] = useState(TREE_PRESETS[0]);
   const [steps, setSteps] = useState(() => generatePostorderSteps(TREE_PRESETS[0].root));
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
+  const [layoutMode, setLayoutMode] = useState<LayoutMode>('dual-pane');
 
   const handleSelectPreset = (preset: typeof TREE_PRESETS[0]) => {
     setSelectedPreset(preset);
@@ -30,6 +42,11 @@ export default function Postorder3DPage() {
 
   const currentStep = steps[currentStepIndex] || steps[0];
   const isComplete = currentStep.actionType === 'complete';
+  const isExpandPhase =
+    currentStep.actionType === 'push_visit' ||
+    currentStep.actionType === 'push_right' ||
+    currentStep.actionType === 'push_left' ||
+    (currentStep.actionType === 'pop' && currentStep.poppedFrame?.phase === 'expand');
 
   // Playback timer
   useEffect(() => {
@@ -49,7 +66,6 @@ export default function Postorder3DPage() {
   // Keyboard shortcuts listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger if user is typing in an input
       if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) return;
 
       if (e.code === 'Space') {
@@ -69,6 +85,12 @@ export default function Postorder3DPage() {
         e.preventDefault();
         setCurrentStepIndex(0);
         setIsPlaying(false);
+      } else if (e.code === 'Digit1') {
+        setLayoutMode('dual-pane');
+      } else if (e.code === 'Digit2') {
+        setLayoutMode('smart-dock');
+      } else if (e.code === 'Digit3') {
+        setLayoutMode('classic');
       }
     };
 
@@ -112,23 +134,53 @@ export default function Postorder3DPage() {
             <h1 className="text-base font-bold text-white flex items-center gap-2">
               Postorder Traversal — Interactive Algorithm Studio
               <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40">
-                Shiki Code Runner & Live Motion Engine
+                Shiki Tokyo-Night & Live Motion Engine
               </span>
             </h1>
             <p className="text-xs text-slate-400 font-mono">
-              Synchronized Shiki TypeScript Runner • Phase Morphing Engine • Value Transfer Pipeline
+              Synchronized Code Runner • Phase Morphing Engine • Value Transfer Pipeline
             </p>
           </div>
         </div>
 
-        {/* Step Indicator & Keyboard Hints */}
-        <div className="flex items-center gap-3">
-          <div className="hidden md:flex items-center gap-2 text-[10px] font-mono text-slate-500 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-800">
-            <span>Shortcuts:</span>
-            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">Space</kbd> Play
-            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">→</kbd> Next
-            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">←</kbd> Prev
-            <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">R</kbd> Reset
+        {/* Layout Switcher Tabs */}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-800 text-xs font-mono">
+            <button
+              onClick={() => setLayoutMode('dual-pane')}
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all ${
+                layoutMode === 'dual-pane'
+                  ? 'bg-sky-500 text-slate-950 font-bold shadow-md'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <Columns2 className="w-3.5 h-3.5" />
+              <span>Option 1: Dual-Pane Studio</span>
+            </button>
+
+            <button
+              onClick={() => setLayoutMode('smart-dock')}
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all ${
+                layoutMode === 'smart-dock'
+                  ? 'bg-purple-500 text-white font-bold shadow-md'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <Zap className="w-3.5 h-3.5" />
+              <span>Option 2: Smart Action Dock</span>
+            </button>
+
+            <button
+              onClick={() => setLayoutMode('classic')}
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all ${
+                layoutMode === 'classic'
+                  ? 'bg-slate-700 text-white font-bold shadow-md'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <LayoutGrid className="w-3.5 h-3.5" />
+              <span>Classic</span>
+            </button>
           </div>
 
           <div className="flex items-center gap-2 bg-slate-900/90 border border-slate-800 px-3.5 py-1.5 rounded-xl text-xs font-mono text-slate-300">
@@ -157,54 +209,150 @@ export default function Postorder3DPage() {
         />
       </section>
 
-      {/* 3. ROW 1: Element 1 (Tree) + Element 2 (Stack) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        {/* Left Column: Element 1 (Tactile 2D Binary Tree) */}
-        <div className="lg:col-span-7 flex flex-col gap-2">
-          <div className="flex items-center gap-2 px-1">
-            <GitBranch className="w-3.5 h-3.5 text-sky-400" />
-            <span className="text-xs font-mono font-bold text-slate-300 uppercase">
-              Element 1: Binary Tree Topology
-            </span>
+      {/* ========================================================================= */}
+      {/* LAYOUT OPTION 1: SIDE-BY-SIDE DUAL-PANE STUDIO                            */}
+      {/* ========================================================================= */}
+      {layoutMode === 'dual-pane' && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* LEFT COLUMN: Shiki Code Runner + Result Buffer (Sticky Algorithmic Focus) */}
+          <div className="lg:col-span-5 flex flex-col gap-5">
+            <div className="flex items-center gap-2 px-1">
+              <Code2 className="w-4 h-4 text-sky-400" />
+              <span className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">
+                Algorithm Execution & Memory Buffer
+              </span>
+            </div>
+
+            {/* Shiki TypeScript Runner */}
+            <ShikiCodeRunner currentStep={currentStep} totalSteps={steps.length} />
+
+            {/* Expanding Result Buffer */}
+            <AnimatedResultMotion
+              result={currentStep.resultSnapshot}
+              isComplete={isComplete}
+              totalNodes={steps[steps.length - 1].resultSnapshot.length}
+            />
           </div>
-          <div className="min-h-[460px] flex-1">
-            <AnimatedTreeMotion root={selectedPreset.root} currentStep={currentStep} />
+
+          {/* RIGHT COLUMN: Visual Canvas (Tree + Stack + Live Pipelines) */}
+          <div className="lg:col-span-7 flex flex-col gap-5">
+            <div className="flex items-center gap-2 px-1">
+              <Sparkles className="w-4 h-4 text-purple-400" />
+              <span className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">
+                Live Data Structures & Dynamic Workstation
+              </span>
+            </div>
+
+            {/* Tree & Stack Sub-Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+              <div className="md:col-span-7 min-h-[380px]">
+                <AnimatedTreeMotion root={selectedPreset.root} currentStep={currentStep} />
+              </div>
+              <div className="md:col-span-5 min-h-[380px]">
+                <AnimatedStackMotion currentStep={currentStep} />
+              </div>
+            </div>
+
+            {/* Dynamic Workstation (Phase Morphing & DataFlow) */}
+            <PhaseTransformationEngine currentStep={currentStep} />
+            <DataFlowPipeline currentStep={currentStep} />
           </div>
         </div>
+      )}
 
-        {/* Right Column: Element 2 (Real Array of Objects Stack) */}
-        <div className="lg:col-span-5 flex flex-col gap-2">
-          <div className="flex items-center gap-2 px-1">
-            <Layers className="w-3.5 h-3.5 text-purple-400" />
-            <span className="text-xs font-mono font-bold text-slate-300 uppercase">
-              Element 2: LIFO Array Stack (Objects)
-            </span>
+      {/* ========================================================================= */}
+      {/* LAYOUT OPTION 2: CONTEXT-AWARE SMART ACTION DOCK                          */}
+      {/* ========================================================================= */}
+      {layoutMode === 'smart-dock' && (
+        <div className="flex flex-col gap-5">
+          {/* Row 1: Primary Data Structures (Tree & Stack) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            <div className="lg:col-span-7 min-h-[420px]">
+              <AnimatedTreeMotion root={selectedPreset.root} currentStep={currentStep} />
+            </div>
+            <div className="lg:col-span-5 min-h-[420px]">
+              <AnimatedStackMotion currentStep={currentStep} />
+            </div>
           </div>
-          <div className="min-h-[460px] flex-1">
-            <AnimatedStackMotion currentStep={currentStep} />
+
+          {/* Row 2: Context-Aware Smart Action Dock (Automatically switches based on Step) */}
+          <section className="p-1 rounded-2xl bg-gradient-to-r from-purple-500/20 via-sky-500/20 to-emerald-500/20 border border-slate-800 shadow-2xl">
+            <div className="flex items-center justify-between px-4 py-2 text-xs font-mono border-b border-slate-800/80 bg-slate-950/80 rounded-t-xl">
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-amber-400 animate-pulse" />
+                <span className="font-bold text-slate-200 uppercase">
+                  Active Context Dock:{' '}
+                  {isExpandPhase ? (
+                    <span className="text-amber-400">Reverse LIFO Scheduling Engine ('expand' phase)</span>
+                  ) : (
+                    <span className="text-emerald-400">Data-Flow Value Transfer Pipeline ('visit' phase)</span>
+                  )}
+                </span>
+              </div>
+              <span className="text-[10px] text-slate-400">Auto-Switches on Action</span>
+            </div>
+
+            <div className="p-2 bg-slate-950/90 rounded-b-xl">
+              {isExpandPhase ? (
+                <PhaseTransformationEngine currentStep={currentStep} />
+              ) : (
+                <DataFlowPipeline currentStep={currentStep} />
+              )}
+            </div>
+          </section>
+
+          {/* Row 3: Code Runner & Output Array side-by-side */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            <div className="lg:col-span-7">
+              <ShikiCodeRunner currentStep={currentStep} totalSteps={steps.length} />
+            </div>
+            <div className="lg:col-span-5 flex flex-col justify-start">
+              <AnimatedResultMotion
+                result={currentStep.resultSnapshot}
+                isComplete={isComplete}
+                totalNodes={steps[steps.length - 1].resultSnapshot.length}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
-      {/* 4. ROW 2: Phase Morphing & Reverse Scheduling Engine */}
-      <PhaseTransformationEngine currentStep={currentStep} />
+      {/* ========================================================================= */}
+      {/* CLASSIC WORKBENCH LAYOUT                                                  */}
+      {/* ========================================================================= */}
+      {layoutMode === 'classic' && (
+        <div className="flex flex-col gap-5">
+          {/* Row 1: Tree + Stack */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            <div className="lg:col-span-7 min-h-[460px]">
+              <AnimatedTreeMotion root={selectedPreset.root} currentStep={currentStep} />
+            </div>
+            <div className="lg:col-span-5 min-h-[460px]">
+              <AnimatedStackMotion currentStep={currentStep} />
+            </div>
+          </div>
 
-      {/* 5. ROW 3: Live DataFlow Pipeline (Left) + Shiki Code Runner (Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <div className="lg:col-span-6">
-          <DataFlowPipeline currentStep={currentStep} />
+          {/* Row 2: Phase Morphing Engine */}
+          <PhaseTransformationEngine currentStep={currentStep} />
+
+          {/* Row 3: DataFlow + Shiki Code Runner */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            <div className="lg:col-span-6">
+              <DataFlowPipeline currentStep={currentStep} />
+            </div>
+            <div className="lg:col-span-6">
+              <ShikiCodeRunner currentStep={currentStep} totalSteps={steps.length} />
+            </div>
+          </div>
+
+          {/* Row 4: Expanding Result Array */}
+          <AnimatedResultMotion
+            result={currentStep.resultSnapshot}
+            isComplete={isComplete}
+            totalNodes={steps[steps.length - 1].resultSnapshot.length}
+          />
         </div>
-        <div className="lg:col-span-6">
-          <ShikiCodeRunner currentStep={currentStep} totalSteps={steps.length} />
-        </div>
-      </div>
-
-      {/* 6. ROW 4: Expanding Result Array Buffer */}
-      <AnimatedResultMotion
-        result={currentStep.resultSnapshot}
-        isComplete={isComplete}
-        totalNodes={steps[steps.length - 1].resultSnapshot.length}
-      />
+      )}
     </main>
   );
 }

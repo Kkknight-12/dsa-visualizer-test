@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Copy, Check, Code2, Sparkles } from 'lucide-react';
+import { Copy, Check, Code2, Sparkles, ChevronRight } from 'lucide-react';
 import { TreeStepState } from '@/types/treeTraversal';
 import { codeToTokens } from 'shiki';
 
@@ -49,6 +49,8 @@ interface Token {
 export function ShikiCodeRunner({ currentStep, totalSteps }: ShikiCodeRunnerProps) {
   const [tokenizedLines, setTokenizedLines] = useState<Token[][]>([]);
   const [copied, setCopied] = useState(false);
+  const activeLineRef = useRef<HTMLDivElement | null>(null);
+  const codeContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -95,6 +97,17 @@ export function ShikiCodeRunner({ currentStep, totalSteps }: ShikiCodeRunnerProp
   const activeLine = getActiveLineNumber();
   const f = currentStep.poppedFrame;
 
+  // Auto-scroll to bring active executing line into focus
+  useEffect(() => {
+    if (activeLineRef.current) {
+      activeLineRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest',
+      });
+    }
+  }, [activeLine, currentStep.stepNumber]);
+
   const getDynamicAnnotation = (lineNum: number) => {
     if (lineNum !== activeLine) return null;
     switch (lineNum) {
@@ -135,7 +148,7 @@ export function ShikiCodeRunner({ currentStep, totalSteps }: ShikiCodeRunnerProp
               </span>
             </h3>
             <p className="text-[11px] text-slate-400 font-sans">
-              Exact code with active execution pointer & inline memory evaluation
+              Auto-focuses & scrolls active execution line into view
             </p>
           </div>
         </div>
@@ -149,8 +162,11 @@ export function ShikiCodeRunner({ currentStep, totalSteps }: ShikiCodeRunnerProp
         </button>
       </div>
 
-      {/* 2. Code Body with Shiki Tokens & Preserved Indentation */}
-      <div className="flex-1 overflow-x-auto overflow-y-auto max-h-[360px] min-h-[300px] bg-[#16161e] p-3 rounded-xl border border-slate-800/90 space-y-0.5 select-text">
+      {/* 2. Code Body with Shiki Tokens & Auto-Scrolling Active Line */}
+      <div
+        ref={codeContainerRef}
+        className="flex-1 overflow-x-auto overflow-y-auto max-h-[360px] min-h-[300px] bg-[#16161e] p-3 rounded-xl border border-slate-800/90 space-y-0.5 select-text scroll-smooth"
+      >
         {rawLines.map((rawText, idx) => {
           const lineNum = idx + 1;
           const isHighlighted = lineNum === activeLine;
@@ -160,16 +176,28 @@ export function ShikiCodeRunner({ currentStep, totalSteps }: ShikiCodeRunnerProp
           return (
             <div
               key={lineNum}
-              className={`relative flex items-center justify-between min-w-max px-2 py-[2px] rounded transition-all duration-150 ${
+              ref={isHighlighted ? activeLineRef : null}
+              className={`relative flex items-center justify-between min-w-max px-2 py-[2px] rounded transition-all duration-200 ${
                 isHighlighted
-                  ? 'bg-sky-500/20 border-l-2 border-sky-400 shadow-inner'
-                  : 'hover:bg-slate-900/40 border-l-2 border-transparent'
+                  ? 'bg-sky-500/20 border-l-4 border-sky-400 shadow-lg shadow-sky-500/10 ring-1 ring-sky-500/30'
+                  : 'hover:bg-slate-900/40 border-l-4 border-transparent'
               }`}
             >
               <div className="flex items-center font-mono">
-                {/* Gutter Line Number */}
-                <span className="w-7 shrink-0 select-none text-[10px] text-slate-600 text-right pr-3">
-                  {lineNum}
+                {/* Gutter Line Number + Active Laser Pointer Icon */}
+                <span className="w-8 shrink-0 select-none text-[10px] text-right pr-2 flex items-center justify-end gap-1">
+                  {isHighlighted ? (
+                    <motion.span
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="text-sky-400 font-bold text-xs"
+                    >
+                      ▶
+                    </motion.span>
+                  ) : null}
+                  <span className={isHighlighted ? 'text-sky-300 font-bold' : 'text-slate-600'}>
+                    {lineNum}
+                  </span>
                 </span>
 
                 {/* Tokenized Shiki Colored Line */}
@@ -190,7 +218,7 @@ export function ShikiCodeRunner({ currentStep, totalSteps }: ShikiCodeRunnerProp
                 </span>
               </div>
 
-              {/* Dynamic Inline Annotation */}
+              {/* Dynamic Inline Annotation Badge */}
               {annotation && (
                 <motion.span
                   initial={{ opacity: 0, x: -8 }}
@@ -209,7 +237,7 @@ export function ShikiCodeRunner({ currentStep, totalSteps }: ShikiCodeRunnerProp
       <div className="mt-2 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
         <div className="flex items-center gap-1.5 text-slate-300 truncate">
           <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-          <span className="truncate">Action: <strong className="text-sky-300">{currentStep.actionTitle}</strong></span>
+          <span className="truncate">Active Line {activeLine}: <strong className="text-sky-300">{currentStep.actionTitle}</strong></span>
         </div>
         <span className="text-[10px] text-slate-500 font-mono shrink-0 pl-2">
           Step {currentStep.stepNumber} / {totalSteps}
