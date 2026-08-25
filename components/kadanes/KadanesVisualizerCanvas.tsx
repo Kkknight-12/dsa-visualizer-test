@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, TrendingUp, AlertTriangle, Trophy, Layers } from 'lucide-react';
+import { Sparkles, TrendingUp, AlertTriangle, Trophy, Layers, Brain } from 'lucide-react';
 import { KadanesStep } from '@/lib/kadanesSimulation';
 import { ReorderableArrayRail, PointerInfo } from '@/components/common/ReorderableArrayRail';
 
@@ -182,7 +182,7 @@ export function KadanesVisualizerCanvas({ currentStep }: KadanesVisualizerCanvas
             </div>
           </div>
         ) : (
-          <>
+          <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col gap-1.5 shadow-inner">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-slate-200">
                 <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
@@ -192,10 +192,19 @@ export function KadanesVisualizerCanvas({ currentStep }: KadanesVisualizerCanvas
                 Step {currentStep.stepNumber}
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 font-sans italic">
-              💡 {currentStep.hinglishNarration}
+
+            <p className="text-[11px] text-slate-300 font-sans">
+              💬 {currentStep.hinglishNarration}
             </p>
-          </>
+
+            <div className="flex items-start gap-1.5 text-[11px] font-sans text-amber-200/90 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1.5 rounded-lg leading-relaxed">
+              <Brain className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <span>
+                <strong className="font-bold text-amber-300 font-mono text-[10px] uppercase tracking-wide">Logic & Intuition: </strong>
+                {currentStep.whyRule}
+              </span>
+            </div>
+          </div>
         )}
       </div>
     </div>
