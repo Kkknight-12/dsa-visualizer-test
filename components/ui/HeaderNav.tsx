@@ -51,14 +51,6 @@ export function HeaderNav() {
         </Link>
 
         <Link
-          href="/consistent-hashing"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-500/20 border border-sky-500/40 text-xs font-mono text-sky-300 hover:bg-sky-500/30 backdrop-blur-xl transition-all shadow-lg shadow-sky-500/10"
-        >
-          <Globe2 className="w-3.5 h-3.5 text-sky-400" />
-          <span>Consistent Hashing 🌐</span>
-        </Link>
-
-        <Link
           href="/postorder-3d"
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-500/20 border border-purple-500/40 text-xs font-mono text-purple-300 hover:bg-purple-500/30 backdrop-blur-xl transition-all shadow-lg shadow-purple-500/10"
         >

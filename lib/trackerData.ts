@@ -399,9 +399,8 @@ export const STRIVER_A2Z_PROBLEMS: DSAProblemTask[] = [
     difficulty: 'Hard',
     corePattern: 'Virtual Nodes & Hash Ring',
     visualizerArchetype: 'System Architecture Engine',
-    hasVisualizer: true,
-    visualizerUrl: '/consistent-hashing',
-    status: 'Completed',
-    notes: 'Interactive 3D Hash Ring with virtual node distribution & keys.'
+    hasVisualizer: false,
+    status: 'Planned',
+    notes: 'System Design Hash Ring module.'
   }
 ];
