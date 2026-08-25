@@ -22,6 +22,7 @@ import {
 import { DualPointerRail } from '@/components/sort-colors/DualPointerRail';
 import { SortColorsCodeRunner } from '@/components/sort-colors/SortColorsCodeRunner';
 import { SortColorsExplanationPanel } from '@/components/sort-colors/SortColorsExplanationPanel';
+import { SortColorsProblemInfo } from '@/components/sort-colors/SortColorsProblemInfo';
 
 export default function SortColorsPage() {
   const [selectedPresetId, setSelectedPresetId] = useState(SORT_COLORS_PRESETS[0].id);
@@ -222,6 +223,9 @@ export default function SortColorsPage() {
 
       {/* 3. Main Studio Workspace */}
       <div className="flex-1 p-4 max-w-[1600px] w-full mx-auto flex flex-col gap-4">
+        {/* PROBLEM STATEMENT & ALGORITHM MASTER GUIDE */}
+        <SortColorsProblemInfo />
+
         {layoutMode === 'dual' ? (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
             {/* Left: Code Runner (5 cols) */}

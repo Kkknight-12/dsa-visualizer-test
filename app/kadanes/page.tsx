@@ -24,6 +24,7 @@ import {
 import { KadanesCodeRunner } from '@/components/kadanes/KadanesCodeRunner';
 import { KadanesVisualizerCanvas } from '@/components/kadanes/KadanesVisualizerCanvas';
 import { KadanesExplanationPanel } from '@/components/kadanes/KadanesExplanationPanel';
+import { KadanesProblemInfo } from '@/components/kadanes/KadanesProblemInfo';
 
 export default function KadanesStudioPage() {
   const [selectedPresetId, setSelectedPresetId] = useState(KADANES_PRESETS[0].id);
@@ -222,6 +223,9 @@ export default function KadanesStudioPage() {
 
       {/* 3. Main Studio Workspace */}
       <div className="flex-1 p-4 max-w-[1600px] w-full mx-auto flex flex-col gap-4">
+        {/* PROBLEM STATEMENT & ALGORITHM MASTER GUIDE */}
+        <KadanesProblemInfo />
+
         {layoutMode === 'dual' ? (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
             {/* Left: Code Runner (5 cols) */}

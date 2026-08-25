@@ -401,7 +401,7 @@ export const STRIVER_A2Z_PROBLEMS: DSAProblemTask[] = [
     corePattern: 'Virtual Nodes & Hash Ring',
     visualizerArchetype: 'System Architecture Engine',
     hasVisualizer: false,
-    status: 'Planned',
+    status: 'Todo',
     notes: 'System Design Hash Ring module.'
   }
 ];

@@ -28,6 +28,7 @@ import {
 } from '@/components/common/ReorderableArrayRail';
 import { NextPermutationCodeRunner } from '@/components/next-permutation/NextPermutationCodeRunner';
 import { NextPermutationExplanationPanel } from '@/components/next-permutation/NextPermutationExplanationPanel';
+import { NextPermutationProblemInfo } from '@/components/next-permutation/NextPermutationProblemInfo';
 
 export default function NextPermutationPage() {
   const [selectedPreset, setSelectedPreset] = useState(NEXT_PERMUTATION_PRESETS[0]);
@@ -284,6 +285,9 @@ export default function NextPermutationPage() {
 
       {/* 3. Main Studio Workspace */}
       <div className="flex-1 p-4 max-w-[1600px] w-full mx-auto flex flex-col gap-5">
+        {/* PROBLEM STATEMENT & ALGORITHM DEEP-DIVE INFO PANEL */}
+        <NextPermutationProblemInfo />
+
         {/* DUAL-PANE STUDIO LAYOUT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
           {/* LEFT COLUMN: Shiki Code Runner + Step Explanation & Core DSA Logic Panel */}

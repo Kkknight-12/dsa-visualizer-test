@@ -19,6 +19,7 @@ import { DataFlowPipeline } from '@/components/postorder-animated/DataFlowPipeli
 import { ShikiCodeRunner } from '@/components/postorder-animated/ShikiCodeRunner';
 import { AnimatedResultMotion } from '@/components/postorder-animated/AnimatedResultMotion';
 import { PostorderExplanationPanel } from '@/components/postorder-animated/PostorderExplanationPanel';
+import { PostorderProblemInfo } from '@/components/postorder-animated/PostorderProblemInfo';
 import { TreeControls } from '@/components/tree-traversal/TreeControls';
 
 type LayoutMode = 'dual-pane' | 'smart-dock' | 'classic';
@@ -198,6 +199,9 @@ export default function Postorder3DPage() {
 
       {/* 3. Main Studio Workspace */}
       <div className="flex-1 p-4 max-w-[1600px] w-full mx-auto flex flex-col gap-5">
+        {/* PROBLEM STATEMENT & ALGORITHM MASTER GUIDE */}
+        <PostorderProblemInfo />
+
         {/* DUAL-PANE STUDIO LAYOUT */}
         {layoutMode === 'dual-pane' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
