@@ -8,6 +8,7 @@ import {
   Play,
   Pause,
   RotateCcw,
+  SkipBack,
   SkipForward,
   ChevronDown,
   Layout,
@@ -31,11 +32,12 @@ export default function KadanesStudioPage() {
   const [speed, setSpeed] = useState<1 | 0.5 | 2>(1);
   const [layoutMode, setLayoutMode] = useState<'dual' | 'dock'>('dual');
 
+  const currentPreset =
+    KADANES_PRESETS.find((p) => p.id === selectedPresetId) || KADANES_PRESETS[0];
+
   // Initialize simulation steps on preset change
   useEffect(() => {
-    const preset =
-      KADANES_PRESETS.find((p) => p.id === selectedPresetId) || KADANES_PRESETS[0];
-    const generatedSteps = generateKadanesSteps(preset.initialArray);
+    const generatedSteps = generateKadanesSteps(currentPreset.initialArray);
     setSteps(generatedSteps);
     setCurrentStepIndex(0);
     setIsPlaying(false);
@@ -65,9 +67,11 @@ export default function KadanesStudioPage() {
   const currentStep = steps[currentStepIndex] || steps[0];
 
   const handleNextStep = () => {
-    if (currentStepIndex < steps.length - 1) {
-      setCurrentStepIndex((prev) => prev + 1);
-    }
+    setCurrentStepIndex((prev) => Math.min(prev + 1, steps.length - 1));
+  };
+
+  const handlePrevStep = () => {
+    setCurrentStepIndex((prev) => Math.max(0, prev - 1));
   };
 
   const handleReset = () => {
@@ -165,6 +169,14 @@ export default function KadanesStudioPage() {
               title="Reset Simulation"
             >
               <RotateCcw className="w-4 h-4" />
+            </button>
+            <button
+              onClick={handlePrevStep}
+              disabled={currentStepIndex === 0}
+              className="p-1.5 rounded-lg text-slate-300 hover:bg-slate-800 disabled:opacity-40 transition-colors"
+              title="Previous Step"
+            >
+              <SkipBack className="w-4 h-4" />
             </button>
             <button
               onClick={() => setIsPlaying(!isPlaying)}

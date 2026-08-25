@@ -20,6 +20,7 @@ interface ReorderableArrayRailProps {
   elements: ArrayBlockElement[];
   pointers?: PointerInfo[];
   swappingIndices?: [number, number];
+  highlightedRange?: [number, number];
   getColorConfig?: (val: number) => {
     bg: string;
     border: string;
@@ -32,6 +33,7 @@ export function ReorderableArrayRail({
   elements,
   pointers = [],
   swappingIndices,
+  highlightedRange,
   getColorConfig,
 }: ReorderableArrayRailProps) {
   const defaultGetColorConfig = (val: number) => {
@@ -87,6 +89,11 @@ export function ReorderableArrayRail({
           const arcY = isSwapping ? (swapPosIdx === 0 ? -28 : 28) : 0;
           const arcRotate = isSwapping ? (swapPosIdx === 0 ? -6 : 6) : 0;
 
+          const isHighlightedRange =
+            highlightedRange !== undefined &&
+            idx >= highlightedRange[0] &&
+            idx <= highlightedRange[1];
+
           return (
             <motion.div
               key={element.id}
@@ -122,17 +129,21 @@ export function ReorderableArrayRail({
                 animate={{
                   y: arcY,
                   rotate: arcRotate,
-                  scale: isSwapping ? 1.15 : 1,
+                  scale: isSwapping ? 1.15 : isHighlightedRange ? 1.05 : 1,
                 }}
                 transition={{
                   y: { type: 'spring', stiffness: 260, damping: 20 },
                   rotate: { type: 'spring', stiffness: 260, damping: 20 },
                   scale: { duration: 0.2 },
                 }}
-                className={`relative w-full h-20 rounded-2xl border-2 flex flex-col items-center justify-center shadow-2xl backdrop-blur-xl transition-colors ${
+                className={`relative w-full h-20 rounded-2xl border-2 flex flex-col items-center justify-center shadow-2xl backdrop-blur-xl transition-all ${
                   colors.bg
                 } ${colors.border} ${colors.text} ${
-                  isSwapping ? 'ring-4 ring-amber-400 shadow-2xl shadow-amber-500/50 z-30' : ''
+                  isSwapping
+                    ? 'ring-4 ring-amber-400 shadow-2xl shadow-amber-500/50 z-30'
+                    : isHighlightedRange
+                    ? 'ring-4 ring-amber-400/90 border-amber-300 shadow-xl shadow-amber-500/40 z-20'
+                    : ''
                 }`}
               >
                 {/* Index Indicator */}
@@ -148,6 +159,17 @@ export function ReorderableArrayRail({
                     className="absolute -top-2.5 px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-extrabold text-[9px] font-mono shadow-lg tracking-wider"
                   >
                     SWAP ↔
+                  </motion.span>
+                )}
+
+                {/* Highlighted Range Badge */}
+                {isHighlightedRange && !isSwapping && (
+                  <motion.span
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="absolute -top-2.5 px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-extrabold text-[8px] font-mono shadow-lg tracking-wider"
+                  >
+                    MAX 🏆
                   </motion.span>
                 )}
 
