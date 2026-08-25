@@ -1,14 +1,22 @@
-# User DSA & Development Guidelines
+# Antigravity DSA Visualizer Memory
 
-- **Teaching Style & Language**: Use Hinglish (Hindi + English) for explanations. Visual and intuitive, focusing on the "why" before the "how".
-- **Two-Step DSA Process**:
-    1. Create a `problem.md` file explaining all approaches (Brute, Better, Optimal) and ask the user to choose one.
-    2. Create a `.ts` file for the chosen approach with extremely detailed comments and a dry run.
-- **TypeScript Namespace**: All code should be in a TypeScript namespace.
-- **Test Cases**: Every solution must include comprehensive test cases.
-- **2D/SVG Visualizer Focus (3D Postponed)**: Focus on clean, high-performance 2D/SVG interactive visualizers with Framer Motion. Advanced 3D / Three.js models and WebGL animations are **postponed for now** (not permanently dropped) because high-fidelity 3D models and smooth 3D animations require further iteration.
-- **Reusable Array & Pointer Component**: For ALL Array and Pointer / Two-Pointer / Sliding Window / Binary Search problems, ALWAYS reuse `components/common/ReorderableArrayRail.tsx` for high-fidelity physical FLIP block sliding, 2-phase swap/pointer motion, and stable upright pointer badges.
-- **Chrome DevTools UI Verification (MANDATORY)**: Always use Chrome DevTools MCP (`chrome-devtools` server: `navigate_page`, `evaluate_script`, `take_screenshot`) to thoroughly verify, inspect, and test the UI layout, responsive bounds, and visual alignments immediately after working on or modifying any UI.
-- **Shiki Code Runner Line Auto-Centering**: Use `element.offsetTop - container.clientHeight/2 + element.clientHeight/2` on `requestAnimationFrame` for auto-centering active lines without artificial spacer divs or CSS `scroll-smooth` conflicts.
-- **Multi-Layout Visualizer Studio**: Offer Dual-Pane (Side-by-Side Code & Canvas) and Smart Action Dock (Phase-based auto-switching) modes for optimal visibility.
-- **Striver A2Z Sheet Blueprint**: Follow `STRIVER_A2Z_VISUALIZER_BLUEPRINT.md` for standard visualizer archetypes across Arrays, LL, Stacks, Trees, Graphs, DP, and Trie.
+## 1. Teaching Style & Workflow
+- **Hinglish Style**: Use Hindi + English for intuitive, visual DSA explanations ("why" before "how").
+- **Two-Step Solution Workflow**:
+  1. Create a `problem.md` explaining Brute, Better, and Optimal approaches.
+  2. Create a `.ts` file for chosen approach inside TS namespace with detailed comments, dry run, and comprehensive test cases.
+
+## 2. DSA Visualizer Studio Conventions (`dsa-visualizer-test`)
+- **2D/SVG Focus (3D Postponed)**: High-performance 2D/SVG interactive visualizers with Framer Motion.
+- **Reusable Array Rail (`components/common/ReorderableArrayRail.tsx`)**:
+  - Mandatory for all Array/Pointer visualizers. Supports FLIP animations, pointer badges, and `highlightedRange` with glowing gold borders + `MAX 🏆` laser badges.
+- **Playthrough Controls & UI Layout**:
+  - **No Blocking Modals**: Keep code runner and canvas 100% visible upon playthrough completion.
+  - **Inline Result Banner**: Render non-blocking final summary banner in canvas action footer (`actionType === 'complete'`).
+  - **Timeline Controls**: Include Reset, Previous Step (`SkipBack`), Play/Pause, Next Step (`SkipForward`), and Speed controls.
+  - **Step Logic & Intuition**: Render dedicated **🧠 LOGIC & INTUITION** panel in canvas footer explaining the "WHY Rule" for every step.
+- **Shiki Code Runner Auto-Centering**:
+  - Auto-scroll active line to vertical midpoint inside `requestAnimationFrame`.
+
+## 3. Mandatory Verification
+- **Chrome DevTools MCP**: Always verify UI changes immediately via `navigate_page`, `evaluate_script`, and `take_screenshot`.

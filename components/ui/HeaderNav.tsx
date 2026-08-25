@@ -66,15 +66,6 @@ export function HeaderNav() {
           <span>Postorder Traversal ⚡</span>
         </Link>
 
-        <a
-          href="https://freesystemdesign.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 text-xs font-mono text-slate-300 hover:text-sky-400 hover:border-sky-500/50 backdrop-blur-xl transition-all"
-        >
-          <ExternalLink className="w-3.5 h-3.5" />
-          <span className="hidden lg:inline">freesystemdesign.com</span>
-        </a>
       </div>
     </header>
   );
