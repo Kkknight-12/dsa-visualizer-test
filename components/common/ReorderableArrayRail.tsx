@@ -21,7 +21,7 @@ interface ReorderableArrayRailProps {
   pointers?: PointerInfo[];
   swappingIndices?: [number, number];
   highlightedRange?: [number, number];
-  getColorConfig?: (val: number) => {
+  getColorConfig?: (val: number, idx: number) => {
     bg: string;
     border: string;
     text: string;
@@ -36,37 +36,13 @@ export function ReorderableArrayRail({
   highlightedRange,
   getColorConfig,
 }: ReorderableArrayRailProps) {
-  const defaultGetColorConfig = (val: number) => {
-    switch (val) {
-      case 0:
-        return {
-          bg: 'bg-rose-500/25',
-          border: 'border-rose-500/80',
-          text: 'text-rose-200',
-          label: 'Red',
-        };
-      case 1:
-        return {
-          bg: 'bg-slate-100 text-slate-950',
-          border: 'border-white',
-          text: 'text-slate-950 font-black',
-          label: 'White',
-        };
-      case 2:
-        return {
-          bg: 'bg-sky-500/25',
-          border: 'border-sky-500/80',
-          text: 'text-sky-200',
-          label: 'Blue',
-        };
-      default:
-        return {
-          bg: 'bg-slate-800',
-          border: 'border-slate-700',
-          text: 'text-slate-300',
-          label: String(val),
-        };
-    }
+  const defaultGetColorConfig = (val: number, _idx?: number) => {
+    return {
+      bg: 'bg-slate-900/90',
+      border: 'border-slate-700/80',
+      text: 'text-slate-100',
+      label: '',
+    };
   };
 
   const getColors = getColorConfig || defaultGetColorConfig;
@@ -77,7 +53,7 @@ export function ReorderableArrayRail({
       <div className="relative flex items-center justify-center gap-3 sm:gap-4 md:gap-5 w-full max-w-4xl">
         {elements.map((element, idx) => {
           const val = element.val;
-          const colors = getColors(val);
+          const colors = getColors(val, idx);
           const isSwapping = swappingIndices?.includes(idx);
           const swapPosIdx = swappingIndices ? swappingIndices.indexOf(idx) : -1;
 
@@ -179,9 +155,11 @@ export function ReorderableArrayRail({
                 </span>
 
                 {/* Sub Label */}
-                <span className="text-[9px] font-mono opacity-80 mt-0.5">
-                  {colors.label}
-                </span>
+                {colors.label ? (
+                  <span className="text-[9px] font-mono opacity-80 mt-0.5">
+                    {colors.label}
+                  </span>
+                ) : null}
               </motion.div>
 
               {/* BOTTOM POINTER TRACK (Slightly Larger Upright Text & Icon) */}
@@ -193,7 +171,7 @@ export function ReorderableArrayRail({
                     className="flex flex-col items-center gap-0.5"
                     transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                   >
-                    <ArrowUp className={`w-5 h-5 ${p.label === 'low' ? 'text-emerald-400' : 'text-amber-400'}`} />
+                    <ArrowUp className={`w-5 h-5 ${p.color.includes('amber') ? 'text-amber-400' : p.color.includes('sky') ? 'text-sky-400' : p.color.includes('purple') ? 'text-purple-400' : 'text-emerald-400'}`} />
                     <span
                       className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-extrabold shadow-lg whitespace-nowrap tracking-wide ${p.color}`}
                     >

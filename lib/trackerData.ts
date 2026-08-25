@@ -73,8 +73,9 @@ export const STRIVER_A2Z_PROBLEMS: DSAProblemTask[] = [
     difficulty: 'Medium',
     corePattern: 'Two Pointers + Sorting',
     visualizerArchetype: 'Dual Pointer Rail',
-    hasVisualizer: false,
-    status: 'Todo',
+    hasVisualizer: true,
+    visualizerUrl: '/3sum',
+    status: 'Completed',
     notes: 'Fixed anchor pointer i + dual scanning pointers (left, right).'
   },
   {
