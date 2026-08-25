@@ -23,6 +23,7 @@ import {
 } from '@/lib/kadanesSimulation';
 import { KadanesCodeRunner } from '@/components/kadanes/KadanesCodeRunner';
 import { KadanesVisualizerCanvas } from '@/components/kadanes/KadanesVisualizerCanvas';
+import { KadanesExplanationPanel } from '@/components/kadanes/KadanesExplanationPanel';
 
 export default function KadanesStudioPage() {
   const [selectedPresetId, setSelectedPresetId] = useState(KADANES_PRESETS[0].id);
@@ -99,13 +100,13 @@ export default function KadanesStudioPage() {
               <TrendingUp className="w-4 h-4 text-emerald-400 font-bold" />
             </div>
             <div>
-              <h1 className="text-sm font-extrabold tracking-tight text-white flex items-center gap-2">
+              <h1 className="text-base sm:text-lg font-extrabold tracking-tight text-white flex items-center gap-2">
                 LeetCode 53: Maximum Subarray — Kadane's Studio
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono font-bold">
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono font-bold">
                   Single Pass O(N)
                 </span>
               </h1>
-              <p className="text-[11px] text-slate-400 font-mono hidden sm:block">
+              <p className="text-xs text-slate-300 font-mono hidden sm:block">
                 Greedy Running Sum • Discard Negative Prefix Sums • Shiki Tokyo-Night Code Runner
               </p>
             </div>
@@ -116,24 +117,24 @@ export default function KadanesStudioPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setLayoutMode('dual')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono flex items-center gap-1.5 border transition-all ${
+            className={`px-3.5 py-2 rounded-lg text-xs font-mono font-semibold flex items-center gap-1.5 border transition-all ${
               layoutMode === 'dual'
                 ? 'bg-sky-500/20 border-sky-500/60 text-sky-200 shadow-lg shadow-sky-500/10'
                 : 'bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800'
             }`}
           >
-            <Layout className="w-3.5 h-3.5" />
+            <Layout className="w-4 h-4" />
             <span className="hidden md:inline">Option 1: Dual-Pane</span>
           </button>
           <button
             onClick={() => setLayoutMode('dock')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono flex items-center gap-1.5 border transition-all ${
+            className={`px-3.5 py-2 rounded-lg text-xs font-mono font-semibold flex items-center gap-1.5 border transition-all ${
               layoutMode === 'dock'
                 ? 'bg-amber-500/20 border-amber-500/60 text-amber-200 shadow-lg shadow-amber-500/10'
                 : 'bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800'
             }`}
           >
-            <Maximize2 className="w-3.5 h-3.5" />
+            <Maximize2 className="w-4 h-4" />
             <span className="hidden md:inline">Option 2: Smart Dock</span>
           </button>
         </div>
@@ -142,13 +143,13 @@ export default function KadanesStudioPage() {
       {/* 2. Top Control Bar (Preset Dropdown, Play/Pause, Speed) */}
       <div className="border-b border-slate-800/60 bg-[#0b0f17] px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 sticky top-[57px] z-40">
         {/* Preset Selector */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-mono text-slate-400 font-semibold">Array Preset:</span>
+        <div className="flex items-center gap-2.5">
+          <span className="text-xs sm:text-sm font-mono text-slate-300 font-bold">Array Preset:</span>
           <div className="relative">
             <select
               value={selectedPresetId}
               onChange={(e) => setSelectedPresetId(e.target.value)}
-              className="appearance-none bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 pr-8 text-xs font-mono text-slate-200 hover:border-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-500 transition-colors cursor-pointer"
+              className="appearance-none bg-slate-900 border border-slate-800 rounded-lg px-3.5 py-1.5 pr-9 text-xs sm:text-sm font-mono font-medium text-slate-100 hover:border-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-500 transition-colors cursor-pointer"
             >
               {KADANES_PRESETS.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -156,7 +157,7 @@ export default function KadanesStudioPage() {
                 </option>
               ))}
             </select>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-2.5 pointer-events-none" />
+            <ChevronDown className="w-4 h-4 text-slate-400 absolute right-2.5 top-2.5 pointer-events-none" />
           </div>
         </div>
 
@@ -165,7 +166,7 @@ export default function KadanesStudioPage() {
           <div className="flex items-center gap-1.5 bg-slate-900/90 border border-slate-800 p-1 rounded-xl shadow-inner">
             <button
               onClick={handleReset}
-              className="p-1.5 rounded-lg text-slate-300 hover:bg-slate-800 transition-colors"
+              className="p-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-colors"
               title="Reset Simulation"
             >
               <RotateCcw className="w-4 h-4" />
@@ -173,14 +174,14 @@ export default function KadanesStudioPage() {
             <button
               onClick={handlePrevStep}
               disabled={currentStepIndex === 0}
-              className="p-1.5 rounded-lg text-slate-300 hover:bg-slate-800 disabled:opacity-40 transition-colors"
+              className="p-2 rounded-lg text-slate-300 hover:bg-slate-800 disabled:opacity-40 transition-colors"
               title="Previous Step"
             >
               <SkipBack className="w-4 h-4" />
             </button>
             <button
               onClick={() => setIsPlaying(!isPlaying)}
-              className="px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-sky-500/25 transition-colors"
+              className="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-lg shadow-sky-500/25 transition-colors"
             >
               {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
               <span>{isPlaying ? 'Pause' : 'Play Simulation'}</span>
@@ -188,7 +189,7 @@ export default function KadanesStudioPage() {
             <button
               onClick={handleNextStep}
               disabled={currentStepIndex >= steps.length - 1}
-              className="p-1.5 rounded-lg text-slate-300 hover:bg-slate-800 disabled:opacity-40 transition-colors"
+              className="p-2 rounded-lg text-slate-300 hover:bg-slate-800 disabled:opacity-40 transition-colors"
               title="Next Step"
             >
               <SkipForward className="w-4 h-4" />
@@ -196,14 +197,14 @@ export default function KadanesStudioPage() {
           </div>
 
           {/* Speed Selector */}
-          <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 rounded-lg p-0.5 text-[10px] font-mono">
+          <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 rounded-lg p-0.5 text-xs font-mono">
             {([0.5, 1, 2] as const).map((s) => (
               <button
                 key={s}
                 onClick={() => setSpeed(s)}
-                className={`px-2 py-1 rounded ${
+                className={`px-2.5 py-1 rounded font-bold ${
                   speed === s
-                    ? 'bg-sky-500 text-slate-950 font-bold'
+                    ? 'bg-sky-500 text-slate-950'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
@@ -213,7 +214,7 @@ export default function KadanesStudioPage() {
           </div>
 
           {/* Step Counter */}
-          <div className="text-xs font-mono text-slate-400 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
+          <div className="text-xs sm:text-sm font-mono text-slate-300 bg-slate-900 px-3.5 py-1.5 rounded-lg border border-slate-800">
             Step <strong className="text-sky-300 font-bold">{currentStepIndex + 1}</strong> / {steps.length}
           </div>
         </div>
@@ -222,27 +223,32 @@ export default function KadanesStudioPage() {
       {/* 3. Main Studio Workspace */}
       <div className="flex-1 p-4 max-w-[1600px] w-full mx-auto flex flex-col gap-4">
         {layoutMode === 'dual' ? (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
             {/* Left: Code Runner (5 cols) */}
-            <div className="lg:col-span-5 h-[520px]">
+            <div className="lg:col-span-5 min-h-[460px]">
               <KadanesCodeRunner currentStep={currentStep} totalSteps={steps.length} />
             </div>
-            {/* Right: Reusable Array Rail Visualizer (7 cols) */}
-            <div className="lg:col-span-7 h-[520px]">
+            {/* Right: Code Visual Block / Array Rail Canvas (7 cols) */}
+            <div className="lg:col-span-7 min-h-[460px]">
               <KadanesVisualizerCanvas currentStep={currentStep} />
             </div>
           </div>
         ) : (
           /* Smart Dock Mode */
-          <div className="flex flex-col gap-4 flex-1">
-            <div className="h-[420px]">
+          <div className="flex flex-col gap-4">
+            <div className="min-h-[380px]">
               <KadanesVisualizerCanvas currentStep={currentStep} />
             </div>
-            <div className="h-[280px]">
+            <div className="min-h-[320px]">
               <KadanesCodeRunner currentStep={currentStep} totalSteps={steps.length} />
             </div>
           </div>
         )}
+
+        {/* 4. Dedicated Code Explanation & Core DSA Logic Panel */}
+        <div className="w-full">
+          <KadanesExplanationPanel currentStep={currentStep} totalSteps={steps.length} />
+        </div>
       </div>
     </main>
   );

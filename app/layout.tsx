@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "3D System Design & DSA Visualizer",
-  description: "Interactive 3D isometric system architecture & algorithm visualizer inspired by Krishna Chaitanya",
+  title: "DSA & System Design Visualizer Studio",
+  description: "High-performance interactive 2D DSA visualizer studio with Shiki Tokyo-Night Code Runner and Hinglish step logic explanations",
 };
 
 export default function RootLayout({
@@ -25,9 +27,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased dark`}
+      className={`${inter.variable} ${jetbrainsMono.variable} min-h-screen antialiased dark`}
     >
-      <body className="min-h-screen flex flex-col bg-[#05070e] text-slate-100 overflow-x-hidden overflow-y-auto">
+      <body className="min-h-screen flex flex-col bg-[#05070e] text-slate-100 font-sans overflow-x-hidden overflow-y-auto">
         {children}
       </body>
     </html>

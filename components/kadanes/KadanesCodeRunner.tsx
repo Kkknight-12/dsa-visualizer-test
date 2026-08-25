@@ -97,22 +97,22 @@ export function KadanesCodeRunner({ currentStep, totalSteps }: KadanesCodeRunner
   const rawLines = RAW_CODE.split('\n');
 
   return (
-    <div className="w-full h-full bg-[#0d1117] border border-slate-800 rounded-2xl p-4 shadow-2xl backdrop-blur-xl flex flex-col justify-between font-mono text-xs overflow-hidden">
+    <div className="w-full h-full bg-[#0d1117] border border-slate-800 rounded-2xl p-4 shadow-2xl backdrop-blur-xl flex flex-col justify-between font-mono text-sm overflow-hidden">
       {/* 1. Header */}
       <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-2">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-sky-500/20 border border-sky-500/40 flex items-center justify-center">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-sky-500/20 border border-sky-500/40 flex items-center justify-center">
             <Code2 className="w-4 h-4 text-sky-400" />
           </div>
           <div>
-            <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wider flex items-center gap-2">
+            <h3 className="text-xs sm:text-sm font-bold text-slate-100 uppercase tracking-wider flex items-center gap-2">
               TypeScript Algorithm Runner
-              <span className="text-[9px] px-2 py-0.2 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 font-mono">
+              <span className="text-[10px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 font-mono">
                 Shiki Tokyo-Night
               </span>
             </h3>
-            <p className="text-[11px] text-slate-400 font-sans flex items-center gap-1.5">
-              <Target className="w-3 h-3 text-sky-400" />
+            <p className="text-xs text-slate-400 font-sans flex items-center gap-1.5 mt-0.5">
+              <Target className="w-3.5 h-3.5 text-sky-400" />
               <span>Clean IDE view with smooth active line auto-focus</span>
             </p>
           </div>
@@ -120,7 +120,7 @@ export function KadanesCodeRunner({ currentStep, totalSteps }: KadanesCodeRunner
 
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1 text-[10px] px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 transition-colors shadow-sm"
+          className="flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 transition-colors shadow-sm"
         >
           {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
           <span>{copied ? 'Copied' : 'Copy'}</span>
@@ -130,7 +130,7 @@ export function KadanesCodeRunner({ currentStep, totalSteps }: KadanesCodeRunner
       {/* 2. Code Body with Shiki Tokens */}
       <div
         ref={codeContainerRef}
-        className="relative flex-1 overflow-x-auto overflow-y-auto max-h-[360px] min-h-[300px] bg-[#16161e] p-3 rounded-xl border border-slate-800/90 space-y-0.5 select-text"
+        className="relative flex-1 overflow-x-auto overflow-y-auto max-h-[420px] min-h-[320px] bg-[#16161e] p-3.5 rounded-xl border border-slate-800/90 space-y-0.5 select-text"
       >
         {rawLines.map((rawText, idx) => {
           const lineNum = idx + 1;
@@ -141,7 +141,7 @@ export function KadanesCodeRunner({ currentStep, totalSteps }: KadanesCodeRunner
             <div
               key={lineNum}
               ref={isHighlighted ? activeLineRef : null}
-              className={`relative flex items-center justify-between min-w-max px-2 py-[2.5px] rounded transition-all duration-200 ${
+              className={`relative flex items-center justify-between min-w-max px-2.5 py-[3px] rounded transition-all duration-200 ${
                 isHighlighted
                   ? 'bg-sky-500/25 border-l-4 border-sky-400 shadow-xl shadow-sky-500/20 ring-1 ring-sky-500/40'
                   : 'hover:bg-slate-900/40 border-l-4 border-transparent'
@@ -149,23 +149,23 @@ export function KadanesCodeRunner({ currentStep, totalSteps }: KadanesCodeRunner
             >
               <div className="flex items-center font-mono">
                 {/* Gutter Line Number + Active Laser Pointer Icon */}
-                <span className="w-8 shrink-0 select-none text-[10px] text-right pr-2 flex items-center justify-end gap-1">
+                <span className="w-9 shrink-0 select-none text-xs text-right pr-2.5 flex items-center justify-end gap-1">
                   {isHighlighted ? (
                     <motion.span
                       initial={{ scale: 0.4, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      className="text-sky-400 font-bold text-xs"
+                      className="text-sky-400 font-bold text-sm"
                     >
                       ▶
                     </motion.span>
                   ) : null}
-                  <span className={isHighlighted ? 'text-sky-300 font-bold' : 'text-slate-600'}>
+                  <span className={isHighlighted ? 'text-sky-300 font-extrabold' : 'text-slate-500'}>
                     {lineNum}
                   </span>
                 </span>
 
                 {/* Tokenized Shiki Colored Line */}
-                <span className="whitespace-pre text-xs leading-relaxed font-mono">
+                <span className="whitespace-pre text-xs sm:text-sm leading-relaxed font-mono font-medium">
                   {tokens ? (
                     tokens.map((tok, tIdx) => (
                       <span
@@ -186,16 +186,16 @@ export function KadanesCodeRunner({ currentStep, totalSteps }: KadanesCodeRunner
         })}
       </div>
 
-      {/* 3. Action Narration Footer */}
-      <div className="mt-2 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
-        <div className="flex items-center gap-1.5 text-slate-300 truncate">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+      {/* 3. Footer Line Indicator */}
+      <div className="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
+        <div className="flex items-center gap-1.5 text-slate-300 truncate font-mono">
+          <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
           <span className="truncate">
-            Line {activeLine}: <strong className="text-sky-300">{currentStep.actionTitle}</strong>
+            Active Line <strong className="text-sky-300 font-bold">{activeLine}</strong>
           </span>
         </div>
-        <span className="text-[10px] text-slate-500 font-mono shrink-0 pl-2">
-          Step {currentStep.stepNumber} / {totalSteps}
+        <span className="text-xs text-slate-400 font-mono shrink-0 pl-2">
+          Step <strong className="text-sky-300 font-bold">{currentStep.stepNumber}</strong> / {totalSteps}
         </span>
       </div>
     </div>
