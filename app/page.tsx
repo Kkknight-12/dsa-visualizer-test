@@ -18,6 +18,17 @@ export default function Home() {
       iconBg: 'from-amber-500 to-orange-600',
     },
     {
+      id: 'next-permutation',
+      title: 'LeetCode 31: Next Permutation Studio',
+      subtitle: 'In-Place O(N) • 3-Step Lexicographical Swap & Reverse',
+      description: 'Step-by-step pivot breakpoint scan, just-greater swapper, and suffix reversal animation on FLIP array rail.',
+      path: '/next-permutation',
+      badge: 'LEXICOGRAPHICAL',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+      icon: Sparkles,
+      iconBg: 'from-amber-500 to-yellow-600',
+    },
+    {
       id: 'sort-colors',
       title: 'LeetCode 75: Sort Colors (Dutch National Flag)',
       subtitle: 'Three Pointers • In-Place O(N) Swap',

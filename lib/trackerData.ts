@@ -48,9 +48,10 @@ export const STRIVER_A2Z_PROBLEMS: DSAProblemTask[] = [
     difficulty: 'Medium',
     corePattern: 'Lexicographical Swap & Reverse',
     visualizerArchetype: 'Dual Pointer Rail',
-    hasVisualizer: false,
-    status: 'Todo',
-    notes: 'Find pivot, swap next greater, and reverse right suffix.'
+    hasVisualizer: true,
+    visualizerUrl: '/next-permutation',
+    status: 'Completed',
+    notes: 'Find pivot, swap next greater, and reverse right suffix reusing ReorderableArrayRail.'
   },
   {
     id: 'lc-56',
