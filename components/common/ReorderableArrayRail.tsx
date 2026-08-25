@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Transition } from 'framer-motion';
 import { ArrowUp, ArrowDown } from 'lucide-react';
 
 export interface ArrayBlockElement {
@@ -10,6 +10,7 @@ export interface ArrayBlockElement {
 }
 
 export interface PointerInfo {
+  id?: string; // Persistent ID for stable Framer Motion layout sliding across steps
   label: string;
   index: number;
   color: string; // Tailwind color class
@@ -47,6 +48,14 @@ export function ReorderableArrayRail({
 
   const getColors = getColorConfig || defaultGetColorConfig;
 
+  // Silky-smooth, gentle spring physics for gliding pointer and cell transitions
+  const smoothSpringTransition: Transition = {
+    type: 'spring',
+    stiffness: 110, // Gentle, controlled speed to prevent snappy/jerky jumps
+    damping: 18, // Clean critical damping without bouncing or overshooting
+    mass: 0.85,
+  };
+
   return (
     <div className="w-full flex flex-col items-center justify-center min-h-[240px] py-4 px-4 select-none">
       {/* Shared Flex Container — Direct Siblings enable Framer Motion FLIP Physical Sliding */}
@@ -74,30 +83,43 @@ export function ReorderableArrayRail({
             <motion.div
               key={element.id}
               layout
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: 0.85, opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{
-                layout: { type: 'spring', stiffness: 180, damping: 19 },
+                layout: smoothSpringTransition,
               }}
               className="relative flex flex-col items-center flex-1 max-w-[80px] min-w-[56px]"
             >
-              {/* TOP POINTER TRACK (Slightly Larger Upright Text & Icon) */}
+              {/* TOP POINTER TRACK (Smooth glide without jerky unmounts) */}
               <div className="h-14 flex items-end justify-center w-full mb-1">
-                {topPointers.map((p) => (
-                  <motion.div
-                    key={`top-ptr-${p.label}`}
-                    layoutId={`ptr-top-${p.label}`}
-                    className="flex flex-col items-center gap-0.5"
-                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                  >
-                    <span
-                      className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-extrabold shadow-lg whitespace-nowrap tracking-wide ${p.color}`}
+                {topPointers.map((p) => {
+                  const pointerId = p.id || p.label.split('=')[0];
+                  return (
+                    <motion.div
+                      key={`top-ptr-${pointerId}`}
+                      layoutId={`ptr-top-${pointerId}`}
+                      className="flex flex-col items-center gap-0.5"
+                      transition={smoothSpringTransition}
                     >
-                      {p.label}={p.index}
-                    </span>
-                    <ArrowDown className="w-5 h-5 text-purple-400 animate-bounce" />
-                  </motion.div>
-                ))}
+                      <span
+                        className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-extrabold shadow-lg whitespace-nowrap tracking-wide ${p.color}`}
+                      >
+                        {p.label}
+                      </span>
+                      <ArrowDown
+                        className={`w-4 h-4 ${
+                          p.color.includes('amber')
+                            ? 'text-amber-400'
+                            : p.color.includes('sky')
+                            ? 'text-sky-400'
+                            : p.color.includes('purple')
+                            ? 'text-purple-400'
+                            : 'text-emerald-400'
+                        }`}
+                      />
+                    </motion.div>
+                  );
+                })}
               </div>
 
               {/* PHYSICAL ARRAY CELL BLOCK */}
@@ -108,11 +130,11 @@ export function ReorderableArrayRail({
                   scale: isSwapping ? 1.15 : isHighlightedRange ? 1.05 : 1,
                 }}
                 transition={{
-                  y: { type: 'spring', stiffness: 260, damping: 20 },
-                  rotate: { type: 'spring', stiffness: 260, damping: 20 },
-                  scale: { duration: 0.2 },
+                  y: smoothSpringTransition,
+                  rotate: smoothSpringTransition,
+                  scale: { duration: 0.25, ease: 'easeOut' },
                 }}
-                className={`relative w-full h-20 rounded-2xl border-2 flex flex-col items-center justify-center shadow-2xl backdrop-blur-xl transition-all ${
+                className={`relative w-full h-20 rounded-2xl border-2 flex flex-col items-center justify-center shadow-2xl backdrop-blur-xl transition-all duration-300 ${
                   colors.bg
                 } ${colors.border} ${colors.text} ${
                   isSwapping
@@ -162,23 +184,36 @@ export function ReorderableArrayRail({
                 ) : null}
               </motion.div>
 
-              {/* BOTTOM POINTER TRACK (Slightly Larger Upright Text & Icon) */}
+              {/* BOTTOM POINTER TRACK (Smooth glide without jerky unmounts) */}
               <div className="h-16 flex flex-col items-center justify-start gap-1 w-full mt-1">
-                {bottomPointers.map((p) => (
-                  <motion.div
-                    key={`bot-ptr-${p.label}`}
-                    layoutId={`ptr-bot-${p.label}`}
-                    className="flex flex-col items-center gap-0.5"
-                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                  >
-                    <ArrowUp className={`w-5 h-5 ${p.color.includes('amber') ? 'text-amber-400' : p.color.includes('sky') ? 'text-sky-400' : p.color.includes('purple') ? 'text-purple-400' : 'text-emerald-400'}`} />
-                    <span
-                      className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-extrabold shadow-lg whitespace-nowrap tracking-wide ${p.color}`}
+                {bottomPointers.map((p) => {
+                  const pointerId = p.id || p.label.split('=')[0];
+                  return (
+                    <motion.div
+                      key={`bot-ptr-${pointerId}`}
+                      layoutId={`ptr-bot-${pointerId}`}
+                      className="flex flex-col items-center gap-0.5"
+                      transition={smoothSpringTransition}
                     >
-                      {p.label}={p.index}
-                    </span>
-                  </motion.div>
-                ))}
+                      <ArrowUp
+                        className={`w-4 h-4 ${
+                          p.color.includes('amber')
+                            ? 'text-amber-400'
+                            : p.color.includes('sky')
+                            ? 'text-sky-400'
+                            : p.color.includes('purple')
+                            ? 'text-purple-400'
+                            : 'text-emerald-400'
+                        }`}
+                      />
+                      <span
+                        className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-extrabold shadow-lg whitespace-nowrap tracking-wide ${p.color}`}
+                      >
+                        {p.label}
+                      </span>
+                    </motion.div>
+                  );
+                })}
               </div>
             </motion.div>
           );

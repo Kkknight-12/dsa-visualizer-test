@@ -125,6 +125,7 @@ export default function NextPermutationPage() {
 
     if (currentStep.pivotIndex !== null) {
       list.push({
+        id: 'pivot',
         label: `pivot (i=${currentStep.pivotIndex})`,
         index: currentStep.pivotIndex,
         color: 'bg-amber-500 border-amber-400 text-slate-950 font-extrabold',
@@ -134,6 +135,7 @@ export default function NextPermutationPage() {
 
     if (currentStep.swapIndex !== null) {
       list.push({
+        id: 'swapper',
         label: `swapper (j=${currentStep.swapIndex})`,
         index: currentStep.swapIndex,
         color: 'bg-sky-500 border-sky-400 text-slate-950 font-extrabold',
@@ -147,6 +149,7 @@ export default function NextPermutationPage() {
       currentStep.scanningIndex !== currentStep.swapIndex
     ) {
       list.push({
+        id: 'scan',
         label: `scan (${currentStep.scanningIndex})`,
         index: currentStep.scanningIndex,
         color: 'bg-purple-500 border-purple-400 text-white font-bold',

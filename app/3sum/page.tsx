@@ -62,11 +62,12 @@ export default function ThreeSumStudioPage() {
     return () => clearTimeout(timer);
   }, [isPlaying, currentStepIdx, steps.length, speedMultiplier]);
 
-  // Construct pointers array for ReorderableArrayRail
+  // Construct pointers array for ReorderableArrayRail with persistent IDs for fluid motion
   const pointers: PointerInfo[] = [];
   if (currentStep && currentStep.actionType !== 'init' && currentStep.actionType !== 'sort') {
     if (currentStep.i >= 0 && currentStep.i < currentStep.arraySnapshot.length) {
       pointers.push({
+        id: 'anchor-i',
         label: `i=${currentStep.i}`,
         index: currentStep.i,
         color: 'bg-amber-400 text-slate-950 font-black',
@@ -79,6 +80,7 @@ export default function ThreeSumStudioPage() {
       currentStep.left !== currentStep.i
     ) {
       pointers.push({
+        id: 'ptr-left',
         label: 'LEFT',
         index: currentStep.left,
         color: 'bg-sky-400 text-slate-950 font-black',
@@ -92,6 +94,7 @@ export default function ThreeSumStudioPage() {
       currentStep.right !== currentStep.left
     ) {
       pointers.push({
+        id: 'ptr-right',
         label: 'RIGHT',
         index: currentStep.right,
         color: 'bg-purple-400 text-white font-black',

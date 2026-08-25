@@ -15,6 +15,8 @@ export interface PointerMovement {
 export interface ThreeSumStep {
   stepNumber: number;
   activeLine: number;
+  activeLines?: number[];
+  highlightType?: 'default' | 'match' | 'skip' | 'exit';
   arraySnapshot: ArrayElement[];
   i: number;
   left: number;
@@ -123,6 +125,8 @@ export function generateThreeSumSteps(initialArray: number[]): ThreeSumStep[] {
   steps.push({
     stepNumber: 1,
     activeLine: 1,
+    activeLines: [1, 2],
+    highlightType: 'default',
     arraySnapshot: elements.map((e) => ({ ...e })),
     i: 0,
     left: 1,
@@ -150,6 +154,8 @@ export function generateThreeSumSteps(initialArray: number[]): ThreeSumStep[] {
     steps.push({
       stepNumber: steps.length + 1,
       activeLine: 3,
+      activeLines: [3],
+      highlightType: 'exit',
       arraySnapshot: elements.map((e) => ({ ...e })),
       i: 0,
       left: 0,
@@ -180,6 +186,8 @@ export function generateThreeSumSteps(initialArray: number[]): ThreeSumStep[] {
   steps.push({
     stepNumber: steps.length + 1,
     activeLine: 5,
+    activeLines: [5, 6],
+    highlightType: 'default',
     arraySnapshot: elements.map((e) => ({ ...e })),
     i: 0,
     left: 1,
@@ -211,6 +219,8 @@ export function generateThreeSumSteps(initialArray: number[]): ThreeSumStep[] {
       steps.push({
         stepNumber: steps.length + 1,
         activeLine: 9,
+        activeLines: [9],
+        highlightType: 'skip',
         arraySnapshot: elements.map((e) => ({ ...e })),
         i,
         left: i + 1,
@@ -243,6 +253,8 @@ export function generateThreeSumSteps(initialArray: number[]): ThreeSumStep[] {
       steps.push({
         stepNumber: steps.length + 1,
         activeLine: 11,
+        activeLines: [11],
+        highlightType: 'exit',
         arraySnapshot: elements.map((e) => ({ ...e })),
         i,
         left: i + 1,
@@ -275,6 +287,8 @@ export function generateThreeSumSteps(initialArray: number[]): ThreeSumStep[] {
       steps.push({
         stepNumber: steps.length + 1,
         activeLine: 12,
+        activeLines: [12],
+        highlightType: 'skip',
         arraySnapshot: elements.map((e) => ({ ...e })),
         i,
         left: n - 2,
@@ -307,6 +321,8 @@ export function generateThreeSumSteps(initialArray: number[]): ThreeSumStep[] {
     steps.push({
       stepNumber: steps.length + 1,
       activeLine: 14,
+      activeLines: [14, 15],
+      highlightType: 'default',
       arraySnapshot: elements.map((e) => ({ ...e })),
       i,
       left,
@@ -345,6 +361,8 @@ export function generateThreeSumSteps(initialArray: number[]): ThreeSumStep[] {
       steps.push({
         stepNumber: steps.length + 1,
         activeLine: 18,
+        activeLines: [17, 18],
+        highlightType: 'default',
         arraySnapshot: elements.map((e) => ({ ...e })),
         i,
         left,
@@ -377,6 +395,8 @@ export function generateThreeSumSteps(initialArray: number[]): ThreeSumStep[] {
         steps.push({
           stepNumber: steps.length + 1,
           activeLine: 25,
+          activeLines: [25, 26, 27, 28, 29],
+          highlightType: 'match',
           arraySnapshot: elements.map((e) => ({ ...e })),
           i,
           left,
@@ -407,6 +427,8 @@ export function generateThreeSumSteps(initialArray: number[]): ThreeSumStep[] {
           steps.push({
             stepNumber: steps.length + 1,
             activeLine: 26,
+            activeLines: [26],
+            highlightType: 'skip',
             arraySnapshot: elements.map((e) => ({ ...e })),
             i,
             left: left + 1,
@@ -438,6 +460,8 @@ export function generateThreeSumSteps(initialArray: number[]): ThreeSumStep[] {
           steps.push({
             stepNumber: steps.length + 1,
             activeLine: 27,
+            activeLines: [27],
+            highlightType: 'skip',
             arraySnapshot: elements.map((e) => ({ ...e })),
             i,
             left,
@@ -471,6 +495,8 @@ export function generateThreeSumSteps(initialArray: number[]): ThreeSumStep[] {
         steps.push({
           stepNumber: steps.length + 1,
           activeLine: 21,
+          activeLines: [20, 21],
+          highlightType: 'skip',
           arraySnapshot: elements.map((e) => ({ ...e })),
           i,
           left: left + 1,
@@ -500,6 +526,8 @@ export function generateThreeSumSteps(initialArray: number[]): ThreeSumStep[] {
         steps.push({
           stepNumber: steps.length + 1,
           activeLine: 23,
+          activeLines: [22, 23],
+          highlightType: 'skip',
           arraySnapshot: elements.map((e) => ({ ...e })),
           i,
           left,
@@ -532,6 +560,8 @@ export function generateThreeSumSteps(initialArray: number[]): ThreeSumStep[] {
   steps.push({
     stepNumber: steps.length + 1,
     activeLine: 34,
+    activeLines: [34],
+    highlightType: 'match',
     arraySnapshot: elements.map((e) => ({ ...e })),
     i: n - 1,
     left: n - 1,

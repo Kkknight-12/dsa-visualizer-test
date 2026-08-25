@@ -108,32 +108,64 @@ export function ThreeSumCodeRunner({ currentStep, totalSteps }: ThreeSumCodeRunn
       >
         {rawLines.map((lineText, index) => {
           const lineNumber = index + 1;
-          const isActive = lineNumber === activeLine;
+          const isPrimaryActive = lineNumber === activeLine;
+          const isHighlighted =
+            (currentStep?.activeLines && currentStep.activeLines.includes(lineNumber)) ||
+            isPrimaryActive;
+          const highlightType = currentStep?.highlightType || 'default';
           const tokens = tokenizedLines[index];
+
+          // Semantic Theme Colors based on action type
+          let lineBgStyle = 'hover:bg-slate-900/40 border-l-4 border-transparent';
+          let lineNumColor = 'text-slate-600';
+          let arrowColor = 'text-sky-400';
+          let badgeBg = 'bg-sky-500 text-slate-950';
+          let badgeText = 'ACTIVE';
+
+          if (isHighlighted) {
+            if (highlightType === 'match') {
+              lineBgStyle =
+                'bg-emerald-500/20 border-l-4 border-emerald-400 shadow-xl shadow-emerald-500/15 ring-1 ring-emerald-500/30';
+              lineNumColor = 'text-emerald-300 font-extrabold';
+              arrowColor = 'text-emerald-400';
+              badgeBg = 'bg-emerald-500 text-slate-950';
+              badgeText = 'MATCH 🎉';
+            } else if (highlightType === 'skip' || highlightType === 'exit') {
+              lineBgStyle =
+                'bg-rose-500/20 border-l-4 border-rose-400 shadow-xl shadow-rose-500/15 ring-1 ring-rose-500/30';
+              lineNumColor = 'text-rose-300 font-extrabold';
+              arrowColor = 'text-rose-400';
+              badgeBg = 'bg-rose-500 text-white';
+              badgeText = highlightType === 'exit' ? 'BREAK 🚫' : 'SKIP ⏩';
+            } else {
+              lineBgStyle =
+                'bg-sky-500/20 border-l-4 border-sky-400 shadow-xl shadow-sky-500/15 ring-1 ring-sky-500/30';
+              lineNumColor = 'text-sky-300 font-extrabold';
+              arrowColor = 'text-sky-400';
+              badgeBg = 'bg-sky-500 text-slate-950';
+              badgeText = 'ACTIVE';
+            }
+          }
 
           return (
             <div
               key={lineNumber}
-              ref={isActive ? activeLineRef : null}
-              className={`relative flex items-center justify-between min-w-max px-2.5 py-[3px] rounded transition-all duration-200 ${
-                isActive
-                  ? 'bg-sky-500/25 border-l-4 border-sky-400 shadow-xl shadow-sky-500/20 ring-1 ring-sky-500/40'
-                  : 'hover:bg-slate-900/40 border-l-4 border-transparent'
-              }`}
+              ref={isPrimaryActive ? activeLineRef : null}
+              className={`relative flex items-center justify-between min-w-max px-2.5 py-[3px] rounded transition-all duration-200 ${lineBgStyle}`}
             >
               <div className="flex items-center font-mono">
                 {/* Gutter Line Number + Active Laser Pointer Icon */}
                 <span className="w-8 shrink-0 select-none text-xs text-right pr-2.5 flex items-center justify-end gap-1">
-                  {isActive ? (
+                  {isPrimaryActive ? (
                     <motion.span
                       initial={{ scale: 0.4, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      className="text-sky-400 font-bold text-xs"
+                      className={`${arrowColor} font-bold text-xs`}
                     >
                       ▶
                     </motion.span>
                   ) : null}
-                  <span className={isActive ? 'text-sky-300 font-extrabold' : 'text-slate-600'}>
+                  <span className={lineNumColor}>
                     {lineNumber}
                   </span>
                 </span>
@@ -156,9 +188,9 @@ export function ThreeSumCodeRunner({ currentStep, totalSteps }: ThreeSumCodeRunn
                 </span>
               </div>
 
-              {isActive && (
-                <span className="text-[9px] px-1.5 py-0.5 rounded bg-sky-500 text-slate-950 font-black uppercase tracking-wider shrink-0 ml-3">
-                  ACTIVE
+              {isPrimaryActive && (
+                <span className={`text-[9px] px-1.5 py-0.5 rounded ${badgeBg} font-black uppercase tracking-wider shrink-0 ml-3 shadow-md`}>
+                  {badgeText}
                 </span>
               )}
             </div>
