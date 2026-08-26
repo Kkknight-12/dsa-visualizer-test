@@ -96,11 +96,12 @@ export const STRIVER_A2Z_PROBLEMS: DSAProblemTask[] = [
     title: 'Trapping Rain Water',
     topic: 'Arrays',
     difficulty: 'Hard',
-    corePattern: 'Two Pointers / Prefix Max',
+    corePattern: 'Two Pointers / LeftMax & RightMax Invariant',
     visualizerArchetype: 'Dual Pointer Rail',
-    hasVisualizer: false,
-    status: 'Todo',
-    notes: '2D Bar chart with liquid trapped height accumulation.'
+    hasVisualizer: true,
+    visualizerUrl: '/trapping-water',
+    status: 'Completed',
+    notes: '2D Elevation Bar chart with liquid trapped height accumulation and stable pointers.'
   },
 
   // 2. Binary Search
