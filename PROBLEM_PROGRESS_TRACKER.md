@@ -13,15 +13,17 @@ This file tracks the step-by-step implementation of all Striver A2Z Sheet proble
 | 3 | **LC 75** | **Sort Colors (0s, 1s, 2s)** | **Arrays** | ✅ `problem-sort-colors.md` | Optimal (Dutch National Flag) | `SortColors.ts` | ✅ Done (`/sort-colors`) | ⭐ Approved (Physical Arc Swap + Stable Pointers) |
 | 4 | **LC 53** | **Maximum Subarray (Kadane's)** | **Arrays** | ✅ `problem-kadanes.md` | Optimal (Kadane's Single Pass O(N)) | `KadanesAlgorithm.ts` | ✅ Done (`/kadanes`) | ⭐ Approved (Reused ReorderableArrayRail + Scoreboard) |
 | 5 | **LC 42** | **Trapping Rain Water** | **Arrays** | ✅ `problem-trapping-rain-water.md` | Optimal (Two Pointers LeftMax/RightMax) | `TrappingRainWater.ts` | ✅ Done (`/trapping-water`) | ⭐ Approved (2D Elevation Basin + Invariant Scoreboard) |
-| 6 | **LC 33** | **Search in Rotated Sorted Array** | **Binary Search** | ⏳ Queued | - | - | In Queue | Next |
-| 7 | LC 206 | Reverse Linked List | Linked List | ⏳ Queued | - | - | In Queue | Next |
+| 6 | **LC 33** | **Search in Rotated Sorted Array** | **Binary Search** | ✅ `problem-search-rotated-array.md` | Optimal (Single-Pass Modified BS) | `SearchRotatedArray.ts` | ✅ Done (`/search-rotated-array`) | ⭐ Approved (Reused ReorderableArrayRail + Range Eliminator) |
+| 7 | **LC 206** | **Reverse Linked List** | **Linked List** | ⏳ Queued | - | - | In Queue | Next |
 | 8 | LC 496 | Next Greater Element I | Stacks & Queues | ⏳ Queued | - | - | In Queue | Next |
 | 9 | LC 743 | Network Delay Time (Dijkstra) | Graphs | ⏳ Queued | - | - | In Queue | Next |
 | 10 | LC 1143 | Longest Common Subsequence (LCS) | DP | ⏳ Queued | - | - | In Queue | Next |
 
 ---
 
-## 📝 Active Problem Log: LC 42 — Trapping Rain Water
+## 📝 Active Problem Log: LC 33 — Search in Rotated Sorted Array
 
-- **Step 1**: Create `problem-trapping-rain-water.md` explaining Brute Force, Better (Prefix/Suffix Max Arrays), and Optimal (Two Pointers) in Hinglish.
-- **Step 2**: Solicit user choice for which approach to implement in TypeScript (`.ts`) and 2D Visualizer.
+- **Step 1**: Created `problem-search-rotated-array.md` explaining Brute Force, Better (Two-Pass BS), and Optimal (Single-Pass Range Eliminator) in Hinglish.
+- **Step 2**: User selected **Optimal Single-Pass Modified Binary Search (O(log N))**.
+- **Step 3**: Implemented `SearchRotatedArray.ts` in `SearchRotatedArraySolution` namespace with 8/8 passing unit tests.
+- **Step 4**: Built 2D Visualizer at `/search-rotated-array` reusing `ReorderableArrayRail.tsx`, `SearchRotatedArrayCodeRunner.tsx`, `SearchRotatedArrayProblemInfo.tsx`, and `SearchRotatedArrayExplanationPanel.tsx`.

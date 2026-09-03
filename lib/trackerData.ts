@@ -113,9 +113,10 @@ export const STRIVER_A2Z_PROBLEMS: DSAProblemTask[] = [
     difficulty: 'Medium',
     corePattern: 'Modified Binary Search',
     visualizerArchetype: 'Range Eliminator Slider',
-    hasVisualizer: false,
-    status: 'Todo',
-    notes: 'Identify sorted half and eliminate unpromising range.'
+    hasVisualizer: true,
+    visualizerUrl: '/search-rotated-array',
+    status: 'Completed',
+    notes: 'Identify sorted half, eliminate unpromising range with FLIP rail and slider.'
   },
   {
     id: 'lc-540',
