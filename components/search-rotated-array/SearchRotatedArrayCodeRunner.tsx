@@ -278,32 +278,32 @@ export function SearchRotatedArrayCodeRunner({
   };
 
   return (
-    <div className="w-full h-full bg-[#0d1117] border border-slate-800 rounded-2xl flex flex-col shadow-2xl overflow-hidden font-mono">
+    <div className="w-full h-full bg-[#0a0d16] border border-slate-800/80 rounded-2xl flex flex-col shadow-xl overflow-hidden font-mono">
       {/* Header Bar */}
-      <div className="px-4 py-3 border-b border-slate-800 bg-[#070a14] flex items-center justify-between text-xs">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-md bg-sky-500/20 border border-sky-500/40 flex items-center justify-center">
-            <Terminal className="w-3.5 h-3.5 text-sky-400" />
+      <div className="px-5 py-3.5 border-b border-slate-800/80 bg-[#080b14] flex items-center justify-between text-xs sm:text-sm">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-lg bg-sky-500/15 border border-sky-500/30 flex items-center justify-center">
+            <Terminal className="w-4 h-4 text-sky-400" />
           </div>
           <span className="font-bold text-slate-200">
             TYPESCRIPT ALGORITHM RUNNER
           </span>
-          <span className="px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 text-[10px] font-bold">
+          <span className="px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 text-xs font-mono font-bold">
             SHIKI TOKYO-NIGHT
           </span>
         </div>
         <button
           onClick={handleCopyCode}
-          className="flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 transition-colors"
+          className="flex items-center gap-1.5 text-xs sm:text-sm font-mono px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-200 transition-colors"
         >
           {copied ? (
             <>
-              <Check className="w-3.5 h-3.5 text-emerald-400" />
+              <Check className="w-4 h-4 text-emerald-400" />
               <span>Copied!</span>
             </>
           ) : (
             <>
-              <Copy className="w-3.5 h-3.5 text-slate-400" />
+              <Copy className="w-4 h-4 text-slate-400" />
               <span>Copy</span>
             </>
           )}
@@ -313,7 +313,7 @@ export function SearchRotatedArrayCodeRunner({
       {/* Code Viewer Container */}
       <div
         ref={containerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-0.5 text-xs text-slate-300 relative select-text"
+        className="flex-1 overflow-y-auto p-4 space-y-1 text-xs sm:text-sm text-slate-200 relative select-text"
         style={{ scrollBehavior: 'auto' }}
       >
         {ALGORITHM_CODE_LINES.map(({ lineNum, tokens }) => {
@@ -322,16 +322,16 @@ export function SearchRotatedArrayCodeRunner({
             <div
               key={lineNum}
               ref={isActive ? activeLineRef : null}
-              className={`flex items-center rounded px-2 py-1 transition-colors ${
+              className={`flex items-center rounded-lg px-2.5 py-1.5 transition-colors ${
                 isActive
-                  ? 'bg-sky-500/25 border-l-2 border-sky-400 shadow-lg text-white font-bold'
-                  : 'hover:bg-slate-900/40 text-slate-400'
+                  ? 'bg-sky-500/20 border-l-2 border-sky-400 text-white font-bold'
+                  : 'hover:bg-slate-900/40 text-slate-300'
               }`}
             >
-              <span className="w-8 text-[11px] text-slate-600 select-none text-right pr-3 shrink-0">
+              <span className="w-9 text-xs text-slate-500 select-none text-right pr-3.5 shrink-0">
                 {lineNum}
               </span>
-              <div className="flex-1 whitespace-pre">
+              <div className="flex-1 whitespace-pre leading-relaxed">
                 {tokens.map((token, idx) => (
                   <span
                     key={idx}
@@ -347,7 +347,7 @@ export function SearchRotatedArrayCodeRunner({
       </div>
 
       {/* Footer Info */}
-      <div className="px-4 py-2 border-t border-slate-800 bg-[#070a14] flex items-center justify-between text-[11px] text-slate-400">
+      <div className="px-5 py-2.5 border-t border-slate-800/80 bg-[#080b14] flex items-center justify-between text-xs sm:text-sm font-mono text-slate-400">
         <span>Line {currentStep.highlightedLine}: {currentStep.actionTitle}</span>
         <span>Step {currentStep.stepNumber} / {totalSteps}</span>
       </div>

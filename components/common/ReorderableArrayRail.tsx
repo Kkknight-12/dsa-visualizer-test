@@ -106,7 +106,7 @@ export function ReorderableArrayRail({
                       transition={smoothSpringTransition}
                     >
                       <span
-                        className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-extrabold shadow-lg whitespace-nowrap tracking-wide ${p.color}`}
+                        className={`px-2.5 py-1 rounded-md text-xs font-mono font-extrabold shadow-md whitespace-nowrap tracking-wide ${p.color}`}
                       >
                         {p.label}
                       </span>
@@ -149,7 +149,7 @@ export function ReorderableArrayRail({
                 }`}
               >
                 {/* Index Indicator */}
-                <span className="absolute top-1.5 left-2 text-[9px] font-mono text-slate-500 font-bold">
+                <span className="absolute top-1.5 left-2 text-[10px] font-mono text-slate-400 font-bold">
                   [{idx}]
                 </span>
 
@@ -182,7 +182,7 @@ export function ReorderableArrayRail({
 
                 {/* Sub Label */}
                 {colors.label ? (
-                  <span className="text-[9px] font-mono opacity-80 mt-0.5">
+                  <span className="text-[10px] font-mono opacity-90 mt-0.5 font-semibold">
                     {colors.label}
                   </span>
                 ) : null}
@@ -211,7 +211,7 @@ export function ReorderableArrayRail({
                         }`}
                       />
                       <span
-                        className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-extrabold shadow-lg whitespace-nowrap tracking-wide ${p.color}`}
+                        className={`px-2.5 py-1 rounded-md text-xs font-mono font-extrabold shadow-md whitespace-nowrap tracking-wide ${p.color}`}
                       >
                         {p.label}
                       </span>

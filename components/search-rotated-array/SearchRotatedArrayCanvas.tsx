@@ -42,7 +42,7 @@ export function SearchRotatedArrayCanvas({
     val,
   }));
 
-  // Configure binary search pointers with restrained, clean styling
+  // Configure binary search pointers with restrained, clean styling and legible font
   const pointers: PointerInfo[] = [];
 
   if (low >= 0 && low < array.length && low <= high) {
@@ -50,7 +50,7 @@ export function SearchRotatedArrayCanvas({
       id: 'low',
       label: `L=${low}`,
       index: low,
-      color: 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30',
+      color: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40',
       direction: 'down',
     });
   }
@@ -60,7 +60,7 @@ export function SearchRotatedArrayCanvas({
       id: 'mid',
       label: `M=${mid}`,
       index: mid,
-      color: 'bg-sky-500/15 text-sky-300 border border-sky-500/30',
+      color: 'bg-sky-500/20 text-sky-300 border border-sky-500/40',
       direction: 'down',
     });
   }
@@ -70,19 +70,19 @@ export function SearchRotatedArrayCanvas({
       id: 'high',
       label: `H=${high}`,
       index: high,
-      color: 'bg-purple-500/15 text-purple-300 border border-purple-500/30',
+      color: 'bg-purple-500/20 text-purple-300 border border-purple-500/40',
       direction: 'down',
     });
   }
 
-  // Refined Color Config: Subdued, elegant, low visual fatigue
+  // Refined Color Config: Subdued, elegant, legible
   const getColorConfig = (val: number, idx: number) => {
     // 1. Exact Match found
     if (idx === mid && isMatch) {
       return {
-        bg: 'bg-emerald-500/15 ring-2 ring-emerald-500/40',
-        border: 'border-emerald-500/60',
-        text: 'text-emerald-200 font-bold',
+        bg: 'bg-emerald-500/20 ring-2 ring-emerald-500/50',
+        border: 'border-emerald-400',
+        text: 'text-emerald-100 font-black',
         label: 'MATCH',
       };
     }
@@ -90,8 +90,8 @@ export function SearchRotatedArrayCanvas({
     // 2. Active Mid pointer
     if (idx === mid && low <= high) {
       return {
-        bg: 'bg-sky-500/15',
-        border: 'border-sky-500/50',
+        bg: 'bg-sky-500/20',
+        border: 'border-sky-400/80',
         text: 'text-sky-200 font-bold',
         label: 'MID',
       };
@@ -110,9 +110,9 @@ export function SearchRotatedArrayCanvas({
     // 4. In Left Sorted Half
     if (sortedHalf === 'left' && idx >= low && idx <= mid) {
       return {
-        bg: 'bg-emerald-500/5',
-        border: 'border-emerald-500/30',
-        text: 'text-slate-100',
+        bg: 'bg-emerald-500/10',
+        border: 'border-emerald-500/40',
+        text: 'text-slate-100 font-bold',
         label: 'SORTED',
       };
     }
@@ -120,9 +120,9 @@ export function SearchRotatedArrayCanvas({
     // 5. In Right Sorted Half
     if (sortedHalf === 'right' && idx >= mid && idx <= high) {
       return {
-        bg: 'bg-purple-500/5',
-        border: 'border-purple-500/30',
-        text: 'text-slate-100',
+        bg: 'bg-purple-500/10',
+        border: 'border-purple-500/40',
+        text: 'text-slate-100 font-bold',
         label: 'SORTED',
       };
     }
@@ -131,7 +131,7 @@ export function SearchRotatedArrayCanvas({
     return {
       bg: 'bg-[#0d121f]',
       border: 'border-slate-800',
-      text: 'text-slate-200',
+      text: 'text-slate-100 font-bold',
       label: '',
     };
   };
@@ -142,58 +142,58 @@ export function SearchRotatedArrayCanvas({
   return (
     <div className="w-full h-full bg-[#0a0d16] border border-slate-800/80 rounded-2xl flex flex-col shadow-xl overflow-hidden font-mono">
       {/* 1. Header Bar */}
-      <div className="px-5 py-3 border-b border-slate-800/80 bg-[#080b14] flex flex-wrap items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-md bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
-            <Search className="w-3.5 h-3.5 text-sky-400" />
+      <div className="px-5 py-3.5 border-b border-slate-800/80 bg-[#080b14] flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-lg bg-sky-500/15 border border-sky-500/30 flex items-center justify-center">
+            <Search className="w-4 h-4 text-sky-400" />
           </div>
-          <span className="font-semibold text-slate-300">
+          <span className="font-bold text-slate-200">
             BINARY SEARCH RANGE ELIMINATOR
           </span>
-          <span className="px-2 py-0.5 rounded bg-slate-800/80 text-slate-400 text-[10px] font-mono">
-            O(log N)
+          <span className="px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 text-xs font-mono font-bold">
+            O(log N) FLIP RAIL
           </span>
         </div>
 
         {/* Target Badge */}
-        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-slate-300 font-mono text-xs">
-          <span className="text-slate-500">TARGET:</span>
-          <span className="font-bold text-sky-400">{target}</span>
+        <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 font-mono text-xs sm:text-sm">
+          <span className="text-slate-400 font-bold">TARGET:</span>
+          <span className="font-extrabold text-sky-300">{target}</span>
         </div>
       </div>
 
       {/* 2. Range Eliminator Slider & Scoreboard Deck */}
-      <div className="p-4 border-b border-slate-800/60 bg-[#070a12] flex flex-col gap-3">
-        {/* Metric Cards - Subdued, cohesive tone */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
+      <div className="p-4 border-b border-slate-800/60 bg-[#070a12] flex flex-col gap-3.5">
+        {/* Metric Cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs sm:text-sm">
           {/* Active Search Space */}
-          <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/70 flex flex-col justify-between">
-            <span className="text-[10px] text-slate-400 font-mono">ACTIVE RANGE</span>
+          <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80 flex flex-col justify-between">
+            <span className="text-xs text-slate-400 font-mono font-bold">ACTIVE RANGE</span>
             <div className="flex items-baseline gap-1 mt-1">
-              <span className="text-base font-bold text-slate-200">
+              <span className="text-lg font-black text-slate-100">
                 {low <= high ? `[${low} ... ${high}]` : 'Empty'}
               </span>
-              <span className="text-[10px] text-slate-400">
+              <span className="text-xs text-slate-400 font-medium">
                 ({activeElementsCount} items)
               </span>
             </div>
           </div>
 
           {/* Current Mid Element */}
-          <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/70 flex flex-col justify-between">
-            <span className="text-[10px] text-slate-400 font-mono">CURRENT MID</span>
+          <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80 flex flex-col justify-between">
+            <span className="text-xs text-slate-400 font-mono font-bold">CURRENT MID</span>
             <div className="flex items-baseline gap-1 mt-1">
-              <span className="text-base font-bold text-sky-300">
+              <span className="text-lg font-black text-sky-300">
                 {mid >= 0 && mid < array.length ? `nums[${mid}] = ${array[mid]}` : '-'}
               </span>
             </div>
           </div>
 
           {/* Sorted Half Detected */}
-          <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/70 flex flex-col justify-between">
-            <span className="text-[10px] text-slate-400 font-mono">SORTED HALF</span>
+          <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80 flex flex-col justify-between">
+            <span className="text-xs text-slate-400 font-mono font-bold">SORTED HALF</span>
             <span
-              className={`text-xs font-semibold mt-1 uppercase ${
+              className={`text-sm font-bold mt-1 uppercase ${
                 sortedHalf === 'left'
                   ? 'text-emerald-300'
                   : sortedHalf === 'right'
@@ -206,22 +206,22 @@ export function SearchRotatedArrayCanvas({
           </div>
 
           {/* Search Status */}
-          <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800/70 flex flex-col justify-between">
-            <span className="text-[10px] text-slate-400 font-mono">STATUS</span>
+          <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80 flex flex-col justify-between">
+            <span className="text-xs text-slate-400 font-mono font-bold">STATUS</span>
             <div className="flex items-center gap-1.5 mt-1">
               {isMatch ? (
-                <span className="text-xs font-bold text-emerald-300 flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="text-sm font-black text-emerald-300 flex items-center gap-1">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                   FOUND!
                 </span>
               ) : isNotFound ? (
-                <span className="text-xs font-bold text-rose-400 flex items-center gap-1">
-                  <XCircle className="w-3.5 h-3.5 text-rose-400" />
+                <span className="text-sm font-black text-rose-400 flex items-center gap-1">
+                  <XCircle className="w-4 h-4 text-rose-400" />
                   NOT FOUND
                 </span>
               ) : (
-                <span className="text-xs font-semibold text-slate-300 flex items-center gap-1">
-                  <Sliders className="w-3.5 h-3.5 text-sky-400" />
+                <span className="text-sm font-bold text-slate-200 flex items-center gap-1">
+                  <Sliders className="w-4 h-4 text-sky-400" />
                   SEARCHING...
                 </span>
               )}
@@ -230,16 +230,16 @@ export function SearchRotatedArrayCanvas({
         </div>
 
         {/* Search Space Shrinkage Progress Bar */}
-        <div className="flex flex-col gap-1 text-[10px] text-slate-400">
+        <div className="flex flex-col gap-1 text-xs text-slate-400">
           <div className="flex justify-between font-mono">
             <span>Search Space Remaining:</span>
-            <span className="text-slate-300 font-semibold">{searchSpacePercent}%</span>
+            <span className="text-slate-200 font-bold">{searchSpacePercent}%</span>
           </div>
-          <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800/60">
+          <div className="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-800/60">
             <motion.div
               animate={{ width: `${searchSpacePercent}%` }}
               transition={{ type: 'spring', stiffness: 120, damping: 20 }}
-              className="h-full bg-sky-500/70 rounded-full"
+              className="h-full bg-sky-500/80 rounded-full"
             />
           </div>
         </div>
@@ -255,12 +255,12 @@ export function SearchRotatedArrayCanvas({
       </div>
 
       {/* 4. Action Banner */}
-      <div className="p-3.5 border-t border-slate-800/80 bg-[#080b14] flex flex-col gap-1">
-        <div className="flex items-center gap-2 text-xs font-semibold text-sky-300">
-          <Sparkles className="w-3.5 h-3.5 text-sky-400 shrink-0" />
+      <div className="p-4 border-t border-slate-800/80 bg-[#080b14] flex flex-col gap-1.5">
+        <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-sky-300">
+          <Sparkles className="w-4 h-4 text-sky-400 shrink-0" />
           <span>{actionTitle}</span>
         </div>
-        <p className="text-xs text-slate-400 font-sans leading-relaxed">
+        <p className="text-xs sm:text-sm text-slate-200 font-sans leading-relaxed">
           {hinglishNarration}
         </p>
       </div>

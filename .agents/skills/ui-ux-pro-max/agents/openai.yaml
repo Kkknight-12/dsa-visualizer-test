@@ -1,0 +1,7 @@
+interface:
+  display_name: "UI UX Pro Max Trial"
+  short_description: "Explicit-only local UI design guidance"
+  default_prompt: "Use $ui-ux-pro-max-trial to propose an accessible UI direction for this repository."
+
+policy:
+  allow_implicit_invocation: false

@@ -88,73 +88,73 @@ export default function SearchRotatedArrayPage() {
   if (!currentStep) return null;
 
   return (
-    <main className="min-h-screen bg-[#070a12] text-slate-200 flex flex-col font-sans overflow-x-hidden">
+    <main className="min-h-screen bg-[#070a12] text-slate-100 flex flex-col font-sans overflow-x-hidden">
       {/* 1. Header Navigation */}
-      <header className="border-b border-slate-800/80 bg-[#090d16] px-4 py-2.5 flex flex-wrap items-center justify-between gap-4 sticky top-0 z-50 backdrop-blur-xl">
+      <header className="border-b border-slate-800/80 bg-[#090d16] px-4 py-3 flex flex-wrap items-center justify-between gap-4 sticky top-0 z-50 backdrop-blur-xl">
         <div className="flex items-center gap-3">
           <Link
             href="/tracker"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300 hover:text-sky-400 hover:border-slate-700 transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs sm:text-sm font-mono text-slate-300 hover:text-sky-400 hover:border-slate-700 transition-all shadow-sm"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
+            <ArrowLeft className="w-4 h-4" />
             <span>Task Tracker</span>
           </Link>
           <div className="h-4 w-px bg-slate-800" />
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-md bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
-              <Search className="w-3.5 h-3.5 text-sky-400 font-bold" />
+            <div className="w-8 h-8 rounded-lg bg-sky-500/15 border border-sky-500/30 flex items-center justify-center shadow-md">
+              <Search className="w-4 h-4 text-sky-400 font-bold" />
             </div>
             <div>
-              <h1 className="text-sm sm:text-base font-bold tracking-tight text-white flex items-center gap-2">
-                LeetCode 33: Search in Rotated Sorted Array
-                <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 font-mono font-medium">
-                  O(log N)
+              <h1 className="text-base sm:text-lg font-extrabold tracking-tight text-white flex items-center gap-2">
+                LeetCode 33: Search in Rotated Sorted Array Studio
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-200 border border-slate-700 font-mono font-bold">
+                  Single Pass O(log N)
                 </span>
               </h1>
-              <p className="text-xs text-slate-400 font-mono hidden sm:block">
-                Modified Binary Search • Range Eliminator Slider • Shiki Tokyo-Night
+              <p className="text-xs sm:text-sm text-slate-300 font-mono hidden sm:block">
+                Modified Binary Search • Range Eliminator Slider • Shiki Tokyo-Night Runner
               </p>
             </div>
           </div>
         </div>
 
         {/* Layout Switcher */}
-        <div className="flex items-center gap-1.5 bg-slate-950 p-0.5 rounded-lg border border-slate-800">
+        <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800">
           <button
             onClick={() => setLayoutMode('dual')}
-            className={`px-3 py-1.5 rounded-md text-xs font-mono font-medium flex items-center gap-1.5 transition-all ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-mono font-semibold flex items-center gap-1.5 transition-all ${
               layoutMode === 'dual'
                 ? 'bg-slate-800 text-slate-100 shadow-sm border border-slate-700'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            <Layout className="w-3.5 h-3.5" />
+            <Layout className="w-4 h-4" />
             <span className="hidden md:inline">Dual-Pane</span>
           </button>
           <button
             onClick={() => setLayoutMode('dock')}
-            className={`px-3 py-1.5 rounded-md text-xs font-mono font-medium flex items-center gap-1.5 transition-all ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-mono font-semibold flex items-center gap-1.5 transition-all ${
               layoutMode === 'dock'
                 ? 'bg-slate-800 text-slate-100 shadow-sm border border-slate-700'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            <Maximize2 className="w-3.5 h-3.5" />
+            <Maximize2 className="w-4 h-4" />
             <span className="hidden md:inline">Smart Dock</span>
           </button>
         </div>
       </header>
 
       {/* 2. Controls Deck (Preset Selector, Playback, Speed, Counter) */}
-      <div className="border-b border-slate-800/60 bg-[#080c15] px-4 py-2 flex flex-wrap items-center justify-between gap-3 sticky top-[53px] z-40">
+      <div className="border-b border-slate-800/60 bg-[#080c15] px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 sticky top-[57px] z-40">
         {/* Preset Selector */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-mono text-slate-400">Preset:</span>
+        <div className="flex items-center gap-2.5">
+          <span className="text-xs sm:text-sm font-mono text-slate-300 font-bold">Scenario Preset:</span>
           <div className="relative">
             <select
               value={selectedPresetId}
               onChange={(e) => setSelectedPresetId(e.target.value)}
-              className="appearance-none bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 pr-8 text-xs font-mono text-slate-200 hover:border-slate-700 focus:outline-none focus:border-slate-600 transition-colors cursor-pointer"
+              className="appearance-none bg-slate-900 border border-slate-800 rounded-lg px-3.5 py-1.5 pr-9 text-xs sm:text-sm font-mono font-medium text-slate-100 hover:border-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-500 transition-colors cursor-pointer"
             >
               {SEARCH_ROTATED_ARRAY_PRESETS.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -162,55 +162,55 @@ export default function SearchRotatedArrayPage() {
                 </option>
               ))}
             </select>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-2.5 pointer-events-none" />
+            <ChevronDown className="w-4 h-4 text-slate-400 absolute right-2.5 top-2.5 pointer-events-none" />
           </div>
         </div>
 
         {/* Timeline & Speed Controls */}
-        <div className="flex items-center gap-2.5">
-          <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 p-0.5 rounded-lg">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 bg-slate-900/90 border border-slate-800 p-1 rounded-xl shadow-inner">
             <button
               onClick={handleReset}
-              className="p-1.5 rounded text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
+              className="p-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-colors"
               title="Reset Simulation"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-4 h-4" />
             </button>
             <button
               onClick={handlePrevStep}
               disabled={currentStepIdx === 0}
-              className="p-1.5 rounded text-slate-400 hover:text-slate-200 hover:bg-slate-800 disabled:opacity-30 transition-colors"
+              className="p-2 rounded-lg text-slate-300 hover:bg-slate-800 disabled:opacity-40 transition-colors"
               title="Previous Step"
             >
-              <SkipBack className="w-3.5 h-3.5" />
+              <SkipBack className="w-4 h-4" />
             </button>
             <button
               onClick={() => setIsPlaying(!isPlaying)}
-              className="px-3 py-1 rounded bg-sky-600 hover:bg-sky-500 text-white font-medium text-xs flex items-center gap-1.5 shadow-sm transition-colors"
+              className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-md shadow-sky-500/20 transition-colors"
             >
-              {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current" />}
-              <span>{isPlaying ? 'Pause' : 'Play'}</span>
+              {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
+              <span>{isPlaying ? 'Pause' : 'Play Simulation'}</span>
             </button>
             <button
               onClick={handleNextStep}
               disabled={currentStepIdx >= steps.length - 1}
-              className="p-1.5 rounded text-slate-400 hover:text-slate-200 hover:bg-slate-800 disabled:opacity-30 transition-colors"
+              className="p-2 rounded-lg text-slate-300 hover:bg-slate-800 disabled:opacity-40 transition-colors"
               title="Next Step"
             >
-              <SkipForward className="w-3.5 h-3.5" />
+              <SkipForward className="w-4 h-4" />
             </button>
           </div>
 
           {/* Speed Selector */}
-          <div className="flex items-center gap-0.5 bg-slate-900 border border-slate-800 rounded-lg p-0.5 text-xs font-mono">
+          <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 rounded-lg p-0.5 text-xs font-mono">
             {([0.5, 1, 2] as const).map((s) => (
               <button
                 key={s}
                 onClick={() => setSpeed(s)}
-                className={`px-2 py-0.5 rounded ${
+                className={`px-2.5 py-1 rounded font-bold ${
                   speed === s
-                    ? 'bg-slate-800 text-slate-100 font-semibold'
-                    : 'text-slate-400 hover:text-slate-300'
+                    ? 'bg-slate-800 text-slate-100'
+                    : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 {s}x
@@ -219,8 +219,8 @@ export default function SearchRotatedArrayPage() {
           </div>
 
           {/* Step Counter */}
-          <div className="text-xs font-mono text-slate-400 bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800">
-            Step <strong className="text-slate-200">{currentStepIdx + 1}</strong> / {steps.length}
+          <div className="text-xs sm:text-sm font-mono text-slate-300 bg-slate-900 px-3.5 py-1.5 rounded-lg border border-slate-800">
+            Step <strong className="text-sky-300 font-bold">{currentStepIdx + 1}</strong> / {steps.length}
           </div>
         </div>
       </div>
