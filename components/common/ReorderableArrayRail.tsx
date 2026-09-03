@@ -22,6 +22,8 @@ interface ReorderableArrayRailProps {
   pointers?: PointerInfo[];
   swappingIndices?: [number, number];
   highlightedRange?: [number, number];
+  highlightedRangeLabel?: string;
+  highlightedRangeClass?: string;
   getColorConfig?: (val: number, idx: number) => {
     bg: string;
     border: string;
@@ -35,6 +37,8 @@ export function ReorderableArrayRail({
   pointers = [],
   swappingIndices,
   highlightedRange,
+  highlightedRangeLabel,
+  highlightedRangeClass,
   getColorConfig,
 }: ReorderableArrayRailProps) {
   const defaultGetColorConfig = (val: number, _idx?: number) => {
@@ -134,18 +138,18 @@ export function ReorderableArrayRail({
                   rotate: smoothSpringTransition,
                   scale: { duration: 0.25, ease: 'easeOut' },
                 }}
-                className={`relative w-full h-20 rounded-2xl border-2 flex flex-col items-center justify-center shadow-2xl backdrop-blur-xl transition-all duration-300 ${
+                className={`relative w-full h-20 rounded-2xl border flex flex-col items-center justify-center shadow-lg backdrop-blur-xl transition-all duration-300 ${
                   colors.bg
                 } ${colors.border} ${colors.text} ${
                   isSwapping
-                    ? 'ring-4 ring-amber-400 shadow-2xl shadow-amber-500/50 z-30'
+                    ? 'ring-2 ring-amber-400 shadow-lg shadow-amber-500/20 z-30'
                     : isHighlightedRange
-                    ? 'ring-4 ring-amber-400/90 border-amber-300 shadow-xl shadow-amber-500/40 z-20'
+                    ? highlightedRangeClass || 'ring-1 ring-sky-500/40 border-sky-400/60 shadow-md shadow-sky-500/5 z-20'
                     : ''
                 }`}
               >
                 {/* Index Indicator */}
-                <span className="absolute top-1.5 left-2 text-[9px] font-mono text-slate-400 font-bold">
+                <span className="absolute top-1.5 left-2 text-[9px] font-mono text-slate-500 font-bold">
                   [{idx}]
                 </span>
 
@@ -154,20 +158,20 @@ export function ReorderableArrayRail({
                   <motion.span
                     initial={{ scale: 0.5, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="absolute -top-2.5 px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-extrabold text-[9px] font-mono shadow-lg tracking-wider"
+                    className="absolute -top-2.5 px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-extrabold text-[9px] font-mono shadow-md tracking-wider"
                   >
                     SWAP ↔
                   </motion.span>
                 )}
 
-                {/* Highlighted Range Badge */}
-                {isHighlightedRange && !isSwapping && (
+                {/* Optional Highlighted Range Badge */}
+                {isHighlightedRange && !isSwapping && highlightedRangeLabel && (
                   <motion.span
                     initial={{ scale: 0.5, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="absolute -top-2.5 px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-extrabold text-[8px] font-mono shadow-lg tracking-wider"
+                    className="absolute -top-2.5 px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-extrabold text-[8px] font-mono shadow-md tracking-wider"
                   >
-                    MAX 🏆
+                    {highlightedRangeLabel}
                   </motion.span>
                 )}
 
