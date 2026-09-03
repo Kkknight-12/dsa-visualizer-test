@@ -7,6 +7,7 @@ import { SearchRotatedArrayStep } from '@/lib/searchRotatedArraySimulation';
 interface SearchRotatedArrayCodeRunnerProps {
   currentStep: SearchRotatedArrayStep;
   totalSteps: number;
+  className?: string;
 }
 
 interface Token {
@@ -249,6 +250,7 @@ const ALGORITHM_CODE_LINES: { lineNum: number; tokens: Token[] }[] = [
 export function SearchRotatedArrayCodeRunner({
   currentStep,
   totalSteps,
+  className,
 }: SearchRotatedArrayCodeRunnerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const activeLineRef = useRef<HTMLDivElement>(null);
@@ -278,7 +280,11 @@ export function SearchRotatedArrayCodeRunner({
   };
 
   return (
-    <div className="w-full h-full bg-[#0a0d16] border border-slate-800/80 rounded-2xl flex flex-col shadow-xl overflow-hidden font-mono">
+    <div
+      className={`w-full h-[480px] max-h-[480px] bg-[#0a0d16] border border-slate-800/80 rounded-2xl flex flex-col shadow-xl overflow-hidden font-mono ${
+        className || ''
+      }`}
+    >
       {/* Header Bar */}
       <div className="px-5 py-3.5 border-b border-slate-800/80 bg-[#080b14] flex items-center justify-between text-xs sm:text-sm">
         <div className="flex items-center gap-2.5">

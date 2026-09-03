@@ -231,26 +231,26 @@ export default function SearchRotatedArrayPage() {
         <SearchRotatedArrayProblemInfo />
 
         {layoutMode === 'dual' ? (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
             {/* Left: Code Runner (5 cols) */}
-            <div className="lg:col-span-5 min-h-[460px]">
+            <div className="lg:col-span-5 w-full">
               <SearchRotatedArrayCodeRunner
                 currentStep={currentStep}
                 totalSteps={steps.length}
               />
             </div>
             {/* Right: Range Eliminator Canvas (7 cols) */}
-            <div className="lg:col-span-7 min-h-[460px]">
+            <div className="lg:col-span-7 w-full">
               <SearchRotatedArrayCanvas currentStep={currentStep} />
             </div>
           </div>
         ) : (
           /* Smart Dock Mode */
           <div className="flex flex-col gap-4">
-            <div className="min-h-[380px]">
+            <div className="w-full">
               <SearchRotatedArrayCanvas currentStep={currentStep} />
             </div>
-            <div className="min-h-[320px]">
+            <div className="w-full">
               <SearchRotatedArrayCodeRunner
                 currentStep={currentStep}
                 totalSteps={steps.length}
