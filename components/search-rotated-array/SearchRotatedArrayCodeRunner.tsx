@@ -281,12 +281,12 @@ export function SearchRotatedArrayCodeRunner({
 
   return (
     <div
-      className={`w-full h-[480px] max-h-[480px] bg-[#0a0d16] border border-slate-800/80 rounded-2xl flex flex-col shadow-xl overflow-hidden font-mono ${
+      className={`w-full h-full lg:absolute lg:inset-0 bg-[#0a0d16] border border-slate-800/80 rounded-2xl flex flex-col shadow-xl overflow-hidden font-mono ${
         className || ''
       }`}
     >
       {/* Header Bar */}
-      <div className="px-5 py-3.5 border-b border-slate-800/80 bg-[#080b14] flex items-center justify-between text-xs sm:text-sm">
+      <div className="px-5 py-3.5 border-b border-slate-800/80 bg-[#080b14] flex items-center justify-between text-xs sm:text-sm shrink-0">
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-lg bg-sky-500/15 border border-sky-500/30 flex items-center justify-center">
             <Terminal className="w-4 h-4 text-sky-400" />
@@ -316,10 +316,10 @@ export function SearchRotatedArrayCodeRunner({
         </button>
       </div>
 
-      {/* Code Viewer Container */}
+      {/* Code Viewer Container with min-h-0 to enable internal scrolling inside flex container */}
       <div
         ref={containerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-1 text-xs sm:text-sm text-slate-200 relative select-text"
+        className="flex-1 min-h-0 overflow-y-auto overflow-x-auto p-4 space-y-1 text-xs sm:text-sm text-slate-200 relative select-text"
         style={{ scrollBehavior: 'auto' }}
       >
         {ALGORITHM_CODE_LINES.map(({ lineNum, tokens }) => {
@@ -353,7 +353,7 @@ export function SearchRotatedArrayCodeRunner({
       </div>
 
       {/* Footer Info */}
-      <div className="px-5 py-2.5 border-t border-slate-800/80 bg-[#080b14] flex items-center justify-between text-xs sm:text-sm font-mono text-slate-400">
+      <div className="px-5 py-2.5 border-t border-slate-800/80 bg-[#080b14] flex items-center justify-between text-xs sm:text-sm font-mono text-slate-400 shrink-0">
         <span>Line {currentStep.highlightedLine}: {currentStep.actionTitle}</span>
         <span>Step {currentStep.stepNumber} / {totalSteps}</span>
       </div>

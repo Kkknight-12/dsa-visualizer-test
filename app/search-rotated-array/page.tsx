@@ -231,9 +231,9 @@ export default function SearchRotatedArrayPage() {
         <SearchRotatedArrayProblemInfo />
 
         {layoutMode === 'dual' ? (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
-            {/* Left: Code Runner (5 cols) */}
-            <div className="lg:col-span-5 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+            {/* Left: Code Runner (5 cols) - Matches Canvas height */}
+            <div className="lg:col-span-5 w-full relative min-h-[480px] lg:min-h-0">
               <SearchRotatedArrayCodeRunner
                 currentStep={currentStep}
                 totalSteps={steps.length}
@@ -250,10 +250,11 @@ export default function SearchRotatedArrayPage() {
             <div className="w-full">
               <SearchRotatedArrayCanvas currentStep={currentStep} />
             </div>
-            <div className="w-full">
+            <div className="w-full relative h-[480px]">
               <SearchRotatedArrayCodeRunner
                 currentStep={currentStep}
                 totalSteps={steps.length}
+                className="h-[480px]"
               />
             </div>
           </div>
